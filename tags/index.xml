@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Thomas Chavakis</title>
+    <link>http://tomchavakis.github.io/tags/</link>
+    <description>Recent content in Tags on Thomas Chavakis</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 19 Nov 2020 12:13:30 +0530</lastBuildDate><atom:link href="http://tomchavakis.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>alter</title>
+      <link>http://tomchavakis.github.io/tags/alter/</link>
+      <pubDate>Thu, 19 Nov 2020 12:13:30 +0530</pubDate>
+      
+      <guid>http://tomchavakis.github.io/tags/alter/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>gh-ost</title>
+      <link>http://tomchavakis.github.io/tags/gh-ost/</link>
+      <pubDate>Thu, 19 Nov 2020 12:13:30 +0530</pubDate>
+      
+      <guid>http://tomchavakis.github.io/tags/gh-ost/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>mysql</title>
+      <link>http://tomchavakis.github.io/tags/mysql/</link>
+      <pubDate>Thu, 19 Nov 2020 12:13:30 +0530</pubDate>
+      
+      <guid>http://tomchavakis.github.io/tags/mysql/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>percona-tools</title>
+      <link>http://tomchavakis.github.io/tags/percona-tools/</link>
+      <pubDate>Thu, 19 Nov 2020 12:13:30 +0530</pubDate>
+      
+      <guid>http://tomchavakis.github.io/tags/percona-tools/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

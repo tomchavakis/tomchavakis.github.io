@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Thomas Chavakis</title>
+    <link>http://tomchavakis.github.io/</link>
+    <description>Recent content on Thomas Chavakis</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Thu, 19 Nov 2020 12:13:30 +0530</lastBuildDate><atom:link href="http://tomchavakis.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Alter tables using the Percona Tools - MySQL</title>
+      <link>http://tomchavakis.github.io/posts/post-1/</link>
+      <pubDate>Thu, 19 Nov 2020 12:13:30 +0530</pubDate>
+      
+      <guid>http://tomchavakis.github.io/posts/post-1/</guid>
+      <description>Introduction You have to be very carefull when you are going to run an ALTER Table in the production Database. MySQL&amp;rsquo;s ALTER TABLE can become a serious problem especially with very large tables. Many people have experience with ALTER TABLE operations that have taken hours or days to complete.
+From the MySQL documentation for ALTER TABLE:
+ALTER TABLE changes the structure of a table. The operations are processed using one of the following algorithms:</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>http://tomchavakis.github.io/about/</link>
+      <pubDate>Tue, 10 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://tomchavakis.github.io/about/</guid>
+      <description>My name is Thomas Chavakis. I&amp;rsquo;m a Software Engineer &amp;amp; Web Developer, specializing in designing large-scale web applications and microServices using GoLang and Microsoft Technologies. I currently work at Beat, while in the past I have worked for the software house of the Hellenic Navy and various software development companies.
+I have a BSc in Computer Science, an MSc in Advance Computing &amp;amp; Information Systems and an MSc in Space Applications &amp;amp; Technologies.</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>http://tomchavakis.github.io/projects/</link>
+      <pubDate>Tue, 10 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://tomchavakis.github.io/projects/</guid>
+      <description>Go
+ turf-go gomodctl  C#
+ nuget-license encrypto  </description>
+    </item>
+    
+    <item>
+      <title>Reading - Podcasts</title>
+      <link>http://tomchavakis.github.io/other/</link>
+      <pubDate>Tue, 10 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>http://tomchavakis.github.io/other/</guid>
+      <description>In the past, I read mainly technical books and scientific articles. During the unprecedented times of the pandemic, I started reading books and listening to podcasts and this is a list of what I have found interesting and I would like to share with you.
+Books Tech
+The Go Programming Language by Alan A.A. Donovan, Brian W. Kernighan
+Designing Data-Intensive Applications, by Martin Kleppmann
+Business - Leadership
+Mindset: Changing The Way You think To Fulfil Your Potential, by Carol S.</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  
+  <url>
+    <loc>http://tomchavakis.github.io/tags/alter/</loc>
+    <lastmod>2020-11-19T12:13:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tomchavakis.github.io/posts/post-1/</loc>
+    <lastmod>2020-11-19T12:13:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tomchavakis.github.io/tags/gh-ost/</loc>
+    <lastmod>2020-11-19T12:13:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tomchavakis.github.io/tags/mysql/</loc>
+    <lastmod>2020-11-19T12:13:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tomchavakis.github.io/tags/percona-tools/</loc>
+    <lastmod>2020-11-19T12:13:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tomchavakis.github.io/posts/</loc>
+    <lastmod>2020-11-19T12:13:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tomchavakis.github.io/tags/</loc>
+    <lastmod>2020-11-19T12:13:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tomchavakis.github.io/</loc>
+    <lastmod>2020-11-19T12:13:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tomchavakis.github.io/about/</loc>
+    <lastmod>2020-11-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tomchavakis.github.io/projects/</loc>
+    <lastmod>2020-11-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tomchavakis.github.io/other/</loc>
+    <lastmod>2020-11-10T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>http://tomchavakis.github.io/categories/</loc>
+  </url>
+  
+</urlset>
