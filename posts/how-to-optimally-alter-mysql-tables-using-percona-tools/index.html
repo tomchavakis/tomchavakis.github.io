@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>How to optimally alter mysql tables using percona-tools - Thomas Chavakis</title><meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta property="og:description" content="Altering the schema in a table with a vast amount of data can take a lot of hours or even days to complete. You have to use the appropriate tools to perform this action like the percona-toolkit or gh-ost. This blog post include some examples and observations in order to run this tool with safety" />
+	<meta name="twitter:description" content="Altering the schema in a table with a vast amount of data can take a lot of hours or even days to complete. You have to use the appropriate tools to perform this action like the percona-toolkit or gh-ost. This blog post include some examples and observations in order to run this tool with safety" />
+	<meta name="description" content="Altering the schema in a table with a vast amount of data can take a lot of hours or even days to complete. You have to use the appropriate tools to perform this action like the percona-toolkit or gh-ost. This blog post include some examples and observations in order to run this tool with safety" />
+	<meta name="description" content="Altering the schema in a table with a vast amount of data can take a lot of hours or even days to complete. You have to use the appropriate tools to perform this action like the percona-toolkit or gh-ost. This blog post include some examples and observations in order to run this tool with safety" />
+
+	<meta property="og:title" content="How to optimally alter mysql tables using percona-tools | Thomas Chavakis" />
+	<meta name="twitter:title" content="How to optimally alter mysql tables using percona-tools | Thomas Chavakis" />
+
+	<meta property="og:image" content=""/>
+	<meta itemprop="name" content="How to optimally alter mysql tables using percona-tools | Thomas Chavakis" />
+	<meta name="application-name" content="How to optimally alter mysql tables using percona-tools | Thomas Chavakis" />
+	<meta property="og:site_name" content="" />
+	<meta property="og:title" content="How to optimally alter mysql tables using percona-tools" />
+<meta property="og:description" content="Altering the schema in a table with a vast amount of data can take a lot of hours or even days to complete. You have to use the appropriate tools to perform this action like the percona-toolkit or gh-ost. This blog post include some examples and observations in order to run this tool with safety" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tomchavakis.github.io/posts/how-to-optimally-alter-mysql-tables-using-percona-tools/" />
+<meta property="article:published_time" content="2020-11-19T12:13:30+05:30" />
+<meta property="article:modified_time" content="2020-11-19T12:13:30+05:30" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How to optimally alter mysql tables using percona-tools"/>
+<meta name="twitter:description" content="Altering the schema in a table with a vast amount of data can take a lot of hours or even days to complete. You have to use the appropriate tools to perform this action like the percona-toolkit or gh-ost. This blog post include some examples and observations in order to run this tool with safety"/>
+<script src="https://tomchavakis.github.io/js/feather.min.js"></script>
+	
+	<link href="https://tomchavakis.github.io/css/fonts.css" rel="stylesheet">
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://tomchavakis.github.io/css/main.css" /><link rel="stylesheet" type="text/css" href="https://tomchavakis.github.io/css/dark.css" media="(prefers-color-scheme: dark)" />
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://tomchavakis.github.io/">Thomas Chavakis</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">Posts</a>
+		
+		<a href="/projects">Projects</a>
+		
+		<a href="/other">Other</a>
+		
+		<a href="/about">About</a>
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">How to optimally alter mysql tables using percona-tools</h1>
+			<div class="meta">Posted on Nov 19, 2020</div>
+		</div>
+		
+
+		<section class="body">
+			<h1 id="introduction">Introduction</h1>
+<p>You have to be very carefull when you are going to run an ALTER Table in the production Database.
+MySQL&rsquo;s ALTER TABLE can become a serious problem especially with very large tables.
+Many people have experience with ALTER TABLE operations that have taken hours or days to complete.</p>
+<p>From the MySQL documentation for ALTER TABLE:</p>
+<p>ALTER TABLE changes the structure of a table.
+The operations are processed using one of the following algorithms:</p>
+<ul>
+<li>COPY: Operations are performed on a copy of the original table, and table data is copied from the original table to the new table row by row. Concurrent DML is not permitted.</li>
+<li>INPLACE: Operations avoid copying table data but may rebuild the table in place. An exclusive metadata lock on the table may be taken briefly during preparation and execution phases of the operation. Typically, concurrent DML is supported.</li>
+<li>INSTANT: Operations only modify metadata in the data dictionary. No exclusive metadata locks are taken on the table during preparation and execution, and table data is unaffected, making operations instantaneous. Concurrent DML is permitted. (Introduced in MySQL 8.0.12)</li>
+</ul>
+<p>The ALGORITHM clause is optional. If the ALGORITHM clause is omitted, MySQL uses ALGORITHM=INSTANT for storage engines and ALTER TABLE clauses that support it. Otherwise, ALGORITHM=INPLACE is used. If ALGORITHM=INPLACE is not supported, ALGORITHM=COPY is used.</p>
+<p>ALTER TABLE operations that use the COPY algorithm wait for other operations that are modifying the table to complete. After alterations are applied to the table copy, data is copied over, the original table is deleted, and the table copy is renamed to the name of the original table. While the ALTER TABLE operation executes, the original table is readable by other sessions (with the exception noted shortly). Updates and writes to the table started after the ALTER TABLE operation begins are stalled until the new table is ready, then are automatically redirected to the new table. The temporary copy of the table is created in the database directory of the original table unless it is a RENAME TO operation that moves the table to a database that resides in a different directory.</p>
+<p>The exception referred to earlier is that ALTER TABLE blocks reads (not just writes) at the point where it is ready to clear outdated table structures from the table and table definition caches. At this point, it must acquire an exclusive lock. To do so, it waits for current readers to finish, and blocks new reads and writes.</p>
+<h1 id="how-to-run-alter-table-on-your-largest-tables-without-downtime">How to run ALTER TABLE on your largest tables without downtime?</h1>
+<h2 id="1-mysql-ddl-feature">1. MySQL DDL Feature</h2>
+<p>MySQL 5.6 added the <code>Online DDL</code> to InnoDB which provides support for in-place table alterations and concurrent DML. Benefits of this feature include:</p>
+<ul>
+<li>Improved responsiveness and availability in busy production environments, where making a table unavailable for minutes or hours is not practical.</li>
+<li>The ability to adjust the balance between performance and concurrency during DDL operations using the LOCK clause. See The LOCK clause.</li>
+<li>Less disk space usage and I/O overhead than the table-copy method.</li>
+</ul>
+<p>You can control aspects of a DDL operation using the ALGORITHM and LOCK clauses of the ALTER TABLE statement. These clauses are placed at the end of the statement, separated from the table and column specifications by commas. For example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ALTER TABLE tbl_name ADD PRIMARY KEY (column), ALGORITHM=INPLACE, LOCK=NONE;
+</code></pre></div><p>The LOCK clause is useful for fine-tuning the degree of concurrent access to the table. The ALGORITHM clause is primarily intended for performance comparisons and as a fallback to the older table-copying behavior in case you encounter any issues. For example:</p>
+<ul>
+<li>To avoid accidentally making the table unavailable for reads, writes, or both, specify a clause on the ALTER TABLE statement such as LOCK=NONE (permit reads and writes) or LOCK=SHARED (permit reads). The operation halts immediately if the requested level of concurrency is not available.</li>
+<li>To compare performance, run a statement with ALGORITHM=INPLACE and ALGORITHM=COPY. Alternatively, run a statement with the old_alter_table configuration option disabled and enabled.</li>
+<li>To avoid tying up the server with an ALTER TABLE operation that copies the table, include ALGORITHM=INPLACE. The statement halts immediately if it cannot use the in-place mechanism.</li>
+</ul>
+<p>For more take a look at the documentation:</p>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-online-ddl.html">https://dev.mysql.com/doc/refman/5.6/en/innodb-online-ddl.html</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html">https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html</a></p>
+<p><a href="https://medium.com/@soomiq/why-you-should-not-use-mysql-5-6-online-ddl-on-aws-aurora-40985d5e90f5">https://medium.com/@soomiq/why-you-should-not-use-mysql-5-6-online-ddl-on-aws-aurora-40985d5e90f5</a></p>
+<h2 id="2-percona-tools">2. PERCONA TOOLS</h2>
+<p>You need to download the latest percona toolkit or get the latest release from the command line:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">wget percona.com/get/percona-toolkit.tar.gz
+
+wget percona.com/get/percona-toolkit.rpm
+
+wget percona.com/get/percona-toolkit.deb
+</code></pre></div><p><strong>pt-online-schema-change - ALTER tables without locking them.</strong></p>
+<p>pt-online-schema-change emulates the way that MySQL alters tables internally, but it works on a copy of the table you wish to alter. This means that the original table is not locked, and clients may continue to read and change data in it.</p>
+<p><code>pt-online-schema-change</code> works by</p>
+<ol>
+<li>creating an empty copy of the table to alter, modifying it as desired,</li>
+<li>copying rows from the original table into the new table.</li>
+<li>When the copy is complete, it moves away the original table and replaces it with the new one.</li>
+<li>By default, it also drops the original table.</li>
+</ol>
+<p>Any modifications to data in the original tables during the copy will be reflected in the new table, because the tool creates <strong>triggers</strong> on the original table to update the corresponding rows in the new table. The use of triggers means that the tool <strong>will not work if any triggers are already defined on the table.</strong></p>
+<p>When the tool finishes copying data into the new table, it uses an atomic <strong>RENAME TABLE operation</strong> to simultaneously rename the original and new tables. After this is complete, the tool drops the original table.</p>
+<p>Foreign keys complicate the tool’s operation and introduce additional <strong>risk</strong>. The technique of atomically renaming the original and new tables does not work when foreign keys refer to the table. The tool must update foreign keys to refer to the new table after the schema change is complete. The tool supports two methods for accomplishing this. You can read more about this in the documentation for <strong>&ndash;alter-foreign-keys-method.</strong></p>
+<p>Foreign keys also cause some side effects. The final table will have the same foreign keys and indexes as the original table (unless you specify differently in your ALTER statement), but the names of the objects may be changed slightly to avoid object name collisions in MySQL and InnoDB.</p>
+<ul>
+<li>In most cases the tool will refuse to operate unless a PRIMARY KEY or UNIQUE INDEX is present in the table. See &ndash;alter for details.</li>
+<li>The tool refuses to operate if it detects replication filters. See -<strong>-[no]check-replication-filters</strong> for details.</li>
+<li>The tool pauses the data copy operation if it observes any replicas that are delayed in replication. See &ndash;max-lag for details.</li>
+<li>The tool pauses or aborts its operation if it detects too much load on the server. See <strong>&ndash;max-load and &ndash;critical-load</strong> for details.</li>
+<li>The tool sets innodb_lock_wait_timeout=1 and (for MySQL 5.5 and newer) lock_wait_timeout=60 so that it is more likely to be the victim of any lock contention, and less likely to disrupt other transactions. These values can be changed by specifying &ndash;set-vars.</li>
+<li>The tool refuses to alter the table if foreign key constraints reference it, unless you specify &ndash;alter-foreign-keys-method.</li>
+</ul>
+<p>Requirements:</p>
+<p><strong>Database Permissions:</strong></p>
+<ul>
+<li>Process</li>
+<li>Replication_slave</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Dry Run:
+=========================
+
+PTDEBUG=1 pt-online-schema-change --progress=percentage,10 --alter=&#39;CHANGE COLUMN `trigger` `trigger` ENUM(&#34;a&#34;,&#34;b&#34;,&#34;c&#34;,&#34;d&#34;,&#34;e&#34;)&#39; --alter-foreign-keys-method=auto h=127.0.0.1,P=3306,D=imdb,t=app_events_relevant,u=root --dry-run --ask-pass --no-check-foreign-keys --critical-load=Threads_running=200 --chunk-size=200
+
+=========================
+Operation, tries, wait:
+  analyze_table, 10, 1
+  copy_rows, 10, 0.25
+  create_triggers, 10, 1
+  drop_triggers, 10, 1
+  swap_tables, 10, 1
+  update_foreign_keys, 10, 1
+No foreign keys reference `imdb`.`app_events_relevant`; ignoring --alter-foreign-keys-method.
+Starting a dry run.  `imdb`.`app_events_relevant` will not be altered.  Specify --execute instead of --dry-run to alter the table.
+Creating new table...
+Created new table imdb._app_events_relevant_new OK.
+Altering new table...
+Altered `imdb`.`_app_events_relevant_new` OK.
+Not creating triggers because this is a dry run.
+Not copying rows because this is a dry run.
+Not swapping tables because this is a dry run.
+Not dropping old table because this is a dry run.
+Not dropping triggers because this is a dry run.
+2020-11-14T13:56:52 Dropping new table...
+2020-11-14T13:56:52 Dropped new table OK.
+Dry run complete.  `imdb`.`app_events_relevant` was not altered.
+</code></pre></div><p><strong>FLAGS</strong>:</p>
+<p>if everything is ok, change <code>--dry-run</code> by <code>--execute</code> and the process will start.</p>
+<p><code>--alter-foreign-keys-method=rebuild_constraints</code></p>
+<p>This is the preferred approach for the reason it maintains the consistency of the schema and its relations. In this approach, before dropping the old table, it runs ALTER on all the child tables to drop existing FK and re-add new FK constraints that points to the columns from the new table (with the schema change in place).</p>
+<p><code>--max-load</code>
+default: Threads_running=25</p>
+<p>Examine SHOW GLOBAL STATUS after every chunk, and pause if any status variables are higher than their thresholds. The option accepts a comma-separated list of MySQL status variables. An optional =MAX_VALUE (or :MAX_VALUE) can follow each variable. If not given, the tool determines a threshold by examining the current value and increasing it by 20%.</p>
+<p>For example, if you want the tool to pause when Threads_connected gets too high, you can specify “Threads_connected”, and the tool will check the current value when it starts working and add 20% to that value. If the current value is 100, then the tool will pause when Threads_connected exceeds 120, and resume working when it is below 120 again. If you want to specify an explicit threshold, such as 110, you can use either “Threads_connected:110” or “Threads_connected=110”.</p>
+<p>The purpose of this option is to prevent the tool from adding too much load to the server. If the data-copy queries are intrusive, or if they cause lock waits, then other queries on the server will tend to block and queue. This will typically cause Threads_running to increase, and the tool can detect that by running SHOW GLOBAL STATUS immediately after each query finishes. If you specify a threshold for this variable, then you can instruct the tool to wait until queries are running normally again. This will not prevent queueing, however; it will only give the server a chance to recover from the queueing. If you notice queueing, it is best to decrease the chunk time.</p>
+<p><strong>Best Practices:</strong></p>
+<ul>
+<li>You must have a stable network connection in order to run the tool with safety.</li>
+<li>In case that you use k8s or docker it is recommended to create a new Linux container with the latest percona-tools installed.</li>
+<li>Use TMUX terminal multiplexer in order to create a terminal session and have the ability to attach the running process again and pick that session up exactly from where you left it by simply attaching to that session.</li>
+<li>In case that you have a Replication Database it would be nice to check the replication lag and adjust the chunk-size accordingly</li>
+</ul>
+<p>Using TMUX:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">tmux
+pt-online-schema-change --progress=percentage,10 -- .......
+===&gt;
+tmux ls
+tmux attach-session -t 0
+</code></pre></div><p><a href="https://www.youtube.com/watch?v=Z8QsKBoRnP0">https://www.youtube.com/watch?v=Z8QsKBoRnP0</a>
+52:47 min</p>
+<p><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html">pt-online-schema-change</a></p>
+<h2 id="3-gh-ost">3. gh-ost</h2>
+<p>GitHub&rsquo;s online schema migration for MySQL</p>
+<p>gh-ost uses the binary log stream to capture table changes, and asynchronously applies them onto the ghost table. gh-ost takes upon itself some tasks that other tools leave for the database to perform. As result, gh-ost has greater control over the migration process; can truly suspend it; can truly decouple the migration&rsquo;s write load from the master&rsquo;s workload.</p>
+<p>Using gh-ost for online schema change</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">gh-ost -allow-on-master -assume-rbr -exact-rowcount 
+    -critical-load Threads_running=400 -critical-load-hibernate-seconds 60 
+    -database ghost -max-load Threads_running=100 -nice-ratio 0.1 
+    -chunk-size 5000 -ask-pass -table sbtest1 -user percona 
+    -host revin-aurora.can0nprz8rtd.us-east-1.rds.amazonaws.com 
+    -postpone-cut-over-flag-file /home/ubuntu/gh-ost-sentinel 
+    -throttle-additional-flag-file /home/ubuntu/gh-ost-throttle_ghost.sbtest1 
+    -alter &#39;ADD COLUMN ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP&#39; 
+    -verbose -execute 2&gt;&amp;1 | tee gh-ost.log
+</code></pre></div><p>Example:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">./gh-ost --allow-on-master -assume-rbr -exact-rowcount --chunk-size=5000 --host=10.1.0.132:3316 --database=sandbox_vcsl --table=notification_task  --user=root -ask-pass  --alter=&#34;&#39;CHANGE COLUMN &#39;trigger&#39; &#39;trigger&#39; enum(&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;,&#39;e&#39;,&#39;hq&#39;);&#39;&#34; --verbose
+</code></pre></div><p><code>--assume-rbr</code>  parameter is required to prevent gh-ost from trying to modify the binlog_format. It is not possible to do so directly in RDS/Aurora, as SUPER privilege is not available to end users.</p>
+<p><code>-allow-on-master</code>  simply indicates to the tool to run everything against the master.</p>
+<p><code>-database , -host , -user , -ask-pass  and -table</code>  are the target instance, credentials and table to make the modifications on.</p>
+<p><code>-critical-load , -max-load</code>  tell gh-ost to watch for these statuses and either abort the process when critical thresholds are reached, or throttle itself when max values are reached.</p>
+<p><code>-postpone-cutover-flag</code> it prevents the tool from switching to the new table as soon as the copy process is complete. This gives the operator better control of when the switch would occur e.g. off-peak hours. The tool will create this file when the option is specified.</p>
+<p><code>-throttle-additional-flag-file</code>  when this file exists, gh-ost pauses both applying binary logs and copying rows, be careful if you have short binary log retention periods.</p>
+<p><code>-nice-ratio</code>  allows the tool to artificially throttle per every rows copied. You can interpret this as percentage relative to last chunk copy time. If the last chunk copy time took 10 seconds, the tool will sleep about 1 second out of 10 seconds. Depending on the traffic on the table, you can be as aggressive as you see fit.</p>
+<h1 id="how-to-debug-the-alter-process">How to debug the Alter Process</h1>
+<h2 id="1-show-processlist">1. SHOW PROCESSLIST</h2>
+<p>The process list is the list of connections, or threads, that are currently connected to
+MySQL. SHOW PROCESSLIST lists the threads, with information about each thread’s status</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SHOW FULL PROCESSLIST;
+SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE COMMAND != &#39;Sleep&#39;;
+</code></pre></div><h2 id="2-information_schema">2. INFORMATION_SCHEMA</h2>
+<p>The INFORMATION_SCHEMA database is a set of system views defined in the SQL standard.</p>
+<p>The beauty of the INFORMATION_SCHEMA views is that you can query them with standard SQL. This gives you much more flexibility than the SHOW commands, which produce result sets that you can’t aggregate, join, or otherwise manipulate with standard
+SQL. Having all this data available in system views makes it possible to write interesting and useful queries.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">-- INNODB Metrics
+SELECT * FROM INFORMATION_SCHEMA.INNODB_METRICS;
+
+-- Shows all queries running for 5 seconds or more:
+SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE COMMAND != &#39;Sleep&#39; AND TIME &gt;= 5;
+
+-- Show all running UPDATEs:
+SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE COMMAND != &#39;Sleep&#39; AND INFO LIKE &#39;%UPDATE %&#39;;
+
+</code></pre></div><h2 id="3-performance_schema">3. PERFORMANCE_SCHEMA</h2>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SELECT * FROM `performance_schema`.`threads`;
+</code></pre></div><p>querying the Performance Schema events_stages_current table.</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SELECT EVENT_NAME, WORK_COMPLETED, WORK_ESTIMATED FROM performance_schema.events_stages_current;
+</code></pre></div><ul>
+<li>The stage event shown differs depending on which ALTER TABLE phase is currently in progress. The <code>WORK_COMPLETED</code> column shows the work completed.</li>
+<li>The <code>WORK_ESTIMATED</code> column provides an estimate of the remaining work.</li>
+<li>The <code>events_stages_current</code> table returns an empty set if the ALTER TABLE operation has completed. In this case, you can check the events_stages_history table to view event data for the completed operation.</li>
+</ul>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SELECT EVENT_NAME, WORK_COMPLETED, WORK_ESTIMATED FROM performance_schema.events_stages_history;
+</code></pre></div><hr>
+<h1 id="useful-commands-for-this-process">Useful Commands for this process</h1>
+<h1 id="1-find-the-size-of-databases">1. Find the Size of Databases</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SELECT table_schema AS &#34;Database&#34;, 
+ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS &#34;Size (MB)&#34; 
+FROM information_schema.TABLES 
+GROUP BY table_schema;
+</code></pre></div><h1 id="2-find-the-size-of-tables">2. Find the Size of Tables</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SELECT
+  TABLE_NAME AS `Table`,
+  ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024) AS `Size (MB)`
+FROM
+  information_schema.TABLES
+WHERE
+  TABLE_SCHEMA = &#34;TalkingData&#34;
+ORDER BY
+  (DATA_LENGTH + INDEX_LENGTH)
+DESC;
+</code></pre></div><h1 id="3-export">3. Export</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">mysqldump --add-drop-table -h SERVER -u USERNAME -p DB TABLE &gt; talkingData.sql
+</code></pre></div><h1 id="4-import">4. Import</h1>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">mysql -u root -p --host=127.0.0.1 --port=3306 imdb &lt; talkingData.sql
+</code></pre></div><h1 id="big-dataset-for-testing">Big dataset for Testing</h1>
+<p><a href="https://archive.org/details/stackexchange">https://archive.org/details/stackexchange</a></p>
+<p><a href="https://www.percona.com/blog/2011/02/01/sample-datasets-for-benchmarking-and-testing/">https://www.percona.com/blog/2011/02/01/sample-datasets-for-benchmarking-and-testing/</a></p>
+<h1 id="references">References:</h1>
+<p><a href="https://www.goodreads.com/book/show/43244.High_Performance_MySQL?from_search=true&amp;from_srp=true&amp;qid=feJ3G2IgcO&amp;rank=1">High Performance MySQL</a>, Second Edition, by Baron Schwartz, Peter Zaitsev, Vadim Tkachenko, Jeremy D. Zawodny,
+Arjen Lentz, and Derek J. Balling</p>
+<p><a href="https://www.percona.com/blog/2018/06/07/using-gh-ost-with-amazon-aurora-for-mysql/">https://www.percona.com/blog/2018/06/07/using-gh-ost-with-amazon-aurora-for-mysql/</a></p>
+<p><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html">https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html</a></p>
+<p><a href="https://github.com/github/gh-ost/">https://github.com/github/gh-ost/</a></p>
+<p><a href="https://github.com/github/gh-ost/blob/master/doc/rds.md">https://github.com/github/gh-ost/blob/master/doc/rds.md</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-online-ddl.html">https://dev.mysql.com/doc/refman/5.6/en/innodb-online-ddl.html</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html">https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html</a></p>
+
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/mysql">mysql</a></li>
+					
+					<li><a href="/tags/alter">alter</a></li>
+					
+					<li><a href="/tags/percona-tools">percona-tools</a></li>
+					
+					<li><a href="/tags/gh-ost">gh-ost</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+	</article>
+</main>
+<footer>
+<hr><a class="soc" href="https://github.com/tomchavakis" title="GitHub"><i data-feather="github"></i></a>|<a class="soc" href="https://twitter.com/TomChavakis" title="Twitter"><i data-feather="twitter"></i></a>|⚡️
+	2020  <a href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+</footer>
+
+
+<script>
+      feather.replace()
+</script></div>
+    </body>
+</html>

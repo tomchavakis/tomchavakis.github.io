@@ -8,11 +8,11 @@
     <language>en-us</language>
     <lastBuildDate>Thu, 19 Nov 2020 12:13:30 +0530</lastBuildDate><atom:link href="https://tomchavakis.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Alter tables using the Percona Tools - MySQL</title>
-      <link>https://tomchavakis.github.io/posts/post-1/</link>
+      <title>How to optimally alter mysql tables using percona-tools</title>
+      <link>https://tomchavakis.github.io/posts/how-to-optimally-alter-mysql-tables-using-percona-tools/</link>
       <pubDate>Thu, 19 Nov 2020 12:13:30 +0530</pubDate>
       
-      <guid>https://tomchavakis.github.io/posts/post-1/</guid>
+      <guid>https://tomchavakis.github.io/posts/how-to-optimally-alter-mysql-tables-using-percona-tools/</guid>
       <description>Introduction You have to be very carefull when you are going to run an ALTER Table in the production Database. MySQL&amp;rsquo;s ALTER TABLE can become a serious problem especially with very large tables. Many people have experience with ALTER TABLE operations that have taken hours or days to complete.
 From the MySQL documentation for ALTER TABLE:
 ALTER TABLE changes the structure of a table. The operations are processed using one of the following algorithms:</description>
