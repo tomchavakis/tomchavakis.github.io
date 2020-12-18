@@ -6,7 +6,19 @@
     <description>Recent content on Thomas Chavakis</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 19 Nov 2020 12:13:30 +0530</lastBuildDate><atom:link href="https://tomchavakis.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 18 Dec 2020 12:18:30 +0530</lastBuildDate><atom:link href="https://tomchavakis.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Collaborative Documentation Driven Development</title>
+      <link>https://tomchavakis.github.io/posts/collaborative-documentation-driven-development/</link>
+      <pubDate>Fri, 18 Dec 2020 12:18:30 +0530</pubDate>
+      
+      <guid>https://tomchavakis.github.io/posts/collaborative-documentation-driven-development/</guid>
+      <description>Introduction Collaborative Documentation Driven Development (CDDD), is an agile way of working within a software development team.
+Every agile team in the software industry has to create software products, versions, and releases are released quickly and frequently.
+This invention occurred because the software teams start the development phase without analyzing in depth what is going to be delivered.
+Here comes this process, in which you have to document the technical implementation.</description>
+    </item>
+    
     <item>
       <title>How to optimally alter mysql tables using percona-tools</title>
       <link>https://tomchavakis.github.io/posts/how-to-optimally-alter-mysql-tables-using-percona-tools/</link>

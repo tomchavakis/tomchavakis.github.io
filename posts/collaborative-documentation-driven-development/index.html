@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Collaborative Documentation Driven Development - Thomas Chavakis</title><meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta property="og:description" content="Collaborative Documentation Driven Development is a new methodology for Agile Teams in order to deliver high quality and documented software products" />
+	<meta name="twitter:description" content="Collaborative Documentation Driven Development is a new methodology for Agile Teams in order to deliver high quality and documented software products" />
+	<meta name="description" content="Collaborative Documentation Driven Development is a new methodology for Agile Teams in order to deliver high quality and documented software products" />
+	<meta name="description" content="Collaborative Documentation Driven Development is a new methodology for Agile Teams in order to deliver high quality and documented software products" />
+
+	<meta property="og:title" content="Collaborative Documentation Driven Development | Thomas Chavakis" />
+	<meta name="twitter:title" content="Collaborative Documentation Driven Development | Thomas Chavakis" />
+
+	<meta property="og:image" content=""/>
+	<meta itemprop="name" content="Collaborative Documentation Driven Development | Thomas Chavakis" />
+	<meta name="application-name" content="Collaborative Documentation Driven Development | Thomas Chavakis" />
+	<meta property="og:site_name" content="" />
+	<meta property="og:title" content="Collaborative Documentation Driven Development" />
+<meta property="og:description" content="Collaborative Documentation Driven Development is a new methodology for Agile Teams in order to deliver high quality and documented software products" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tomchavakis.github.io/posts/collaborative-documentation-driven-development/" />
+<meta property="article:published_time" content="2020-12-18T12:18:30+05:30" />
+<meta property="article:modified_time" content="2020-12-18T12:18:30+05:30" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Collaborative Documentation Driven Development"/>
+<meta name="twitter:description" content="Collaborative Documentation Driven Development is a new methodology for Agile Teams in order to deliver high quality and documented software products"/>
+<script src="https://tomchavakis.github.io/js/feather.min.js"></script>
+	
+	<link href="https://tomchavakis.github.io/css/fonts.css" rel="stylesheet">
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://tomchavakis.github.io/css/main.css" /><link rel="stylesheet" type="text/css" href="https://tomchavakis.github.io/css/dark.css" media="(prefers-color-scheme: dark)" />
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://tomchavakis.github.io/">Thomas Chavakis</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">Posts</a>
+		
+		<a href="/projects">Projects</a>
+		
+		<a href="/other">Other</a>
+		
+		<a href="/about">About</a>
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Collaborative Documentation Driven Development</h1>
+			<div class="meta">Posted on Dec 18, 2020</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="introduction">Introduction</h2>
+<p>Collaborative Documentation Driven Development (CDDD), is an agile way of working within a software development team.</p>
+<p>Every agile team in the software industry has to create software products, versions, and releases are released quickly and frequently.</p>
+<p>This invention occurred because the software teams start the development phase without analyzing in depth what is going to be delivered.</p>
+<p>Here comes this process, in which you have to document the technical implementation. This document will be under review from other team members until all the technical details will be clear and acceptable to everyone.</p>
+<h2 id="when">When</h2>
+<p>Before the end of each sprint, and after you have successfully delivered the tasks of the current sprint you have to make a preparation for the next sprint. Grooming meetings are part of this process.</p>
+<p>The output of that meeting(s) is that the team will have the chance to adjust the business need and provide a high-level estimation. As a result, the Product Owner of the team will refine the backlog according to the team dynamics the velocity of this team.</p>
+<p>At this particular moment, and after the grooming meeting, the team can take the time to analyze each task of the sprint and write a technical specification that will become a product of continuous collaboration with other team members.</p>
+<p>The assignee will present the technical specification to other team members during the HOW meeting.
+Later on, the team will be based on this document for the development phase.</p>
+<p><img src="/img/ddd.png" alt="ddd"></p>
+<h2 id="how">How</h2>
+<p>Step 1: Analyze the task at the Grooming Meeting</p>
+<p>Step 2: Assign the Task to a team member</p>
+<p>Step 3: Create a new Folder at the <code>docs/dspec/ticket_number</code></p>
+<p>Step 4: The assignee will generate a new MarkDown Document (readme.md) like this one:</p>
+<p><code>docs/dspec/ticket_number/pb-13222/readme.md</code></p>
+<p>Step 5: The assignee will complete the technical analysis document according to the template.</p>
+<p>Step 6: Open a new PR</p>
+<p>Step 7: The proposal is under scrutinization from all the participants</p>
+<p>Step 8: When this PR will take approvals then is under development phase.</p>
+<h2 id="advantages">Advantages</h2>
+<ul>
+<li>All team members participate in technical decisions.</li>
+<li>You create the technical documentation incrementally and not once-off.</li>
+<li>This technique is supplementary of the Architecture Decision Records <a href="https://github.com/joelparkerhenderson/architecture_decision_record">ADR</a></li>
+<li>You link the Business Need with the Technical Implementation with the Ticket. It would be useful for other teams with the same business need.</li>
+<li>You think before start coding. There are less possibilities to follow the wrong path.</li>
+<li>A possible project handover will be easier because everything are documented.</li>
+<li>More efficient communication and collaboration with other crafts. This document is the source of truth and other crafts can based on your solution.</li>
+<li>Sprint Cohesion and continuous development</li>
+</ul>
+<h2 id="disadvantages">Disadvantages</h2>
+<ul>
+<li>It&rsquo;s a more time-consuming method</li>
+</ul>
+<h2 id="template">Template</h2>
+<p>The template can be different between teams, because each team has very different structure and business operation. An example will be the following:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## Ticket Link
+
+## Problem 
+Describe the problem or business need.
+
+## Proposed Solution
+Describe the solution and the technical approach to the problem.
+
+### Artifacts
+Import the Diagram that justifies the solution.
+
+### Endpoint(s)
+Analyze the possible endpoint request structure with the relative payload and method. 
+Analyze all the success and error response(s).
+
+### Database Changes
+Write down all the possible changes to the database 
+
+### Event Message Payload
+Analyze the possible event message at the relative topic. 
+
+## Affected Components/Services
+Describe all the affected components or other microservices that will be impacted by this solution.
+
+## Attention needed
+Recognize possible code refactorings or important things that should be communicated before the implementation. This will help the code reviewers.
+
+## Next Steps/ Improvements
+Write down the possible improvements and the remaining work.
+</code></pre></div>
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/agile">agile</a></li>
+					
+					<li><a href="/tags/cddd">CDDD</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+	</article>
+</main>
+<footer>
+<hr><a class="soc" href="https://github.com/tomchavakis" title="GitHub"><i data-feather="github"></i></a>|<a class="soc" href="https://twitter.com/TomChavakis" title="Twitter"><i data-feather="twitter"></i></a>|⚡️
+	2020  <a href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+</footer>
+
+
+<script>
+      feather.replace()
+</script></div>
+    </body>
+</html>

@@ -3,6 +3,36 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://tomchavakis.github.io/tags/agile/</loc>
+    <lastmod>2020-12-18T12:18:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tomchavakis.github.io/tags/cddd/</loc>
+    <lastmod>2020-12-18T12:18:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tomchavakis.github.io/posts/collaborative-documentation-driven-development/</loc>
+    <lastmod>2020-12-18T12:18:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tomchavakis.github.io/posts/</loc>
+    <lastmod>2020-12-18T12:18:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tomchavakis.github.io/tags/</loc>
+    <lastmod>2020-12-18T12:18:30+05:30</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://tomchavakis.github.io/</loc>
+    <lastmod>2020-12-18T12:18:30+05:30</lastmod>
+  </url>
+  
+  <url>
     <loc>https://tomchavakis.github.io/tags/alter/</loc>
     <lastmod>2020-11-19T12:13:30+05:30</lastmod>
   </url>
@@ -24,21 +54,6 @@
   
   <url>
     <loc>https://tomchavakis.github.io/tags/percona-tools/</loc>
-    <lastmod>2020-11-19T12:13:30+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://tomchavakis.github.io/posts/</loc>
-    <lastmod>2020-11-19T12:13:30+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://tomchavakis.github.io/tags/</loc>
-    <lastmod>2020-11-19T12:13:30+05:30</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://tomchavakis.github.io/</loc>
     <lastmod>2020-11-19T12:13:30+05:30</lastmod>
   </url>
   
