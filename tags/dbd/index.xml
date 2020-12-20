@@ -9,10 +9,10 @@
     <lastBuildDate>Fri, 18 Dec 2020 12:18:30 +0530</lastBuildDate><atom:link href="https://tomchavakis.github.io/tags/dbd/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Documentation Before Development</title>
-      <link>https://tomchavakis.github.io/posts/collaborative-documentation-driven-development/</link>
+      <link>https://tomchavakis.github.io/posts/documentation-before-development/</link>
       <pubDate>Fri, 18 Dec 2020 12:18:30 +0530</pubDate>
       
-      <guid>https://tomchavakis.github.io/posts/collaborative-documentation-driven-development/</guid>
+      <guid>https://tomchavakis.github.io/posts/documentation-before-development/</guid>
       <description>Introduction Documentation Before Development (DBD), is an agile way of working within a software development team.
 Every agile team in the software industry has to release products quickly and frequently, and usually documents the processes followed at the very end of the project.
 The DBD process was created to address the problems arising when software teams start the delopment phase without analyzing in depth what is going to be delivered.</description>

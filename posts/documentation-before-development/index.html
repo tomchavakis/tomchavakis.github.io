@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html><head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>Documentation Before Development - Thomas Chavakis</title><meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<meta property="og:description" content="Documentation Before Development is a process for Agile Teams to deliver high quality and documented software products" />
+	<meta name="twitter:description" content="Documentation Before Development is a process for Agile Teams to deliver high quality and documented software products" />
+	<meta name="description" content="Documentation Before Development is a process for Agile Teams to deliver high quality and documented software products" />
+	<meta name="description" content="Documentation Before Development is a process for Agile Teams to deliver high quality and documented software products" />
+
+	<meta property="og:title" content="Documentation Before Development | Thomas Chavakis" />
+	<meta name="twitter:title" content="Documentation Before Development | Thomas Chavakis" />
+
+	<meta property="og:image" content=""/>
+	<meta itemprop="name" content="Documentation Before Development | Thomas Chavakis" />
+	<meta name="application-name" content="Documentation Before Development | Thomas Chavakis" />
+	<meta property="og:site_name" content="" />
+	<meta property="og:title" content="Documentation Before Development" />
+<meta property="og:description" content="Documentation Before Development is a process for Agile Teams to deliver high quality and documented software products" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tomchavakis.github.io/posts/documentation-before-development/" />
+<meta property="article:published_time" content="2020-12-18T12:18:30+05:30" />
+<meta property="article:modified_time" content="2020-12-18T12:18:30+05:30" />
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Documentation Before Development"/>
+<meta name="twitter:description" content="Documentation Before Development is a process for Agile Teams to deliver high quality and documented software products"/>
+<script src="https://tomchavakis.github.io/js/feather.min.js"></script>
+	
+	<link href="https://tomchavakis.github.io/css/fonts.css" rel="stylesheet">
+	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://tomchavakis.github.io/css/main.css" /><link rel="stylesheet" type="text/css" href="https://tomchavakis.github.io/css/dark.css" media="(prefers-color-scheme: dark)" />
+	
+	
+</head>
+<body>
+        <div class="content"><header>
+	<div class="main">
+		<a href="https://tomchavakis.github.io/">Thomas Chavakis</a>
+	</div>
+	<nav>
+		
+		<a href="/">Home</a>
+		
+		<a href="/posts">Posts</a>
+		
+		<a href="/projects">Projects</a>
+		
+		<a href="/other">Other</a>
+		
+		<a href="/about">About</a>
+		
+	</nav>
+</header>
+
+<main>
+	<article>
+		<div class="title">
+			<h1 class="title">Documentation Before Development</h1>
+			<div class="meta">Posted on Dec 18, 2020</div>
+		</div>
+		
+
+		<section class="body">
+			<h2 id="introduction">Introduction</h2>
+<p>Documentation Before Development (DBD), is an agile way of working within a software development team.</p>
+<p>Every agile team in the software industry has to release products quickly and frequently, and usually documents the processes followed at the very end of the project.</p>
+<p>The DBD process was created to address the problems arising when software teams start the delopment phase without analyzing in depth what is going to be delivered.</p>
+<p>In this process you have to document the technical implementation of each task after the grooming meeting. The document will be under review from other team members until all technical details are clear and acceptable to everyone.</p>
+<p>This technique is supplementary of the Architecture Decision Records <a href="https://github.com/joelparkerhenderson/architecture_decision_record">ADR</a>.</p>
+<h2 id="when">When</h2>
+<p>Before the end of each sprint, and after you have successfully delivered the tasks of the sprint, you have to make a preparation for the next one. Grooming meeting is part of this process.</p>
+<p>The output of a Grooming meeting is that the team will have the chance to adjust the business need and provide a high-level point estimation. As a result, the Product Owner of the team will refine the backlog according to the team&rsquo;s dynamics, such as the velocity of the team.</p>
+<p>After the grooming meeting, the team can take the time to analyze each task of the next sprint and write a technical specification that will become a product of continuous collaboration with other team members.</p>
+<p>The assignee will present the technical specification to other team members during the HOW meeting.
+Later on, all the domains/crafts will be based on this document for the development phase.</p>
+<p><img src="/img/ddd.png" alt="ddd"></p>
+<h2 id="how">How</h2>
+<p>Step 1: Analyze the task at the Grooming Meeting</p>
+<p>Step 2: Assign the Task to a team member</p>
+<p>Step 3: Create a new Folder at the <code>docs/dspec/ticket_number</code></p>
+<p>Step 4: The assignee will generate a new MarkDown Document (readme.md) like this one:</p>
+<p><code>docs/dspec/ticket_number/pb-13222/readme.md</code></p>
+<p>Step 5: The assignee will complete the technical analysis document according to the template.</p>
+<p>Step 6: Create a new Code Review</p>
+<p>Step 7: The proposal is under review from all reviewers.</p>
+<p>Step 8: When this code review is approved, you can merge it and start the coding/development phase.</p>
+<h2 id="advantages">Advantages</h2>
+<ul>
+<li>All team members contribute actively to technical decision-making through interactive reviews. In that way, everyone has a clear understanding of the expected final outcome.</li>
+<li>You link the Business Need with the Technical Implementation with the Ticket. This could be used as reference for other teams with the same business need.</li>
+<li>You think before start coding. There are fewer possibilities to follow the wrong path.</li>
+<li>A possible project handover will be easier because process knowledge is not lost.This also facilitates new employees' onboarding process.</li>
+<li>This document is the &ldquo;contract&rdquo; which details all the agreed technical implementation and will become the source of truth for other crafts/domains who work in parallel with your team.</li>
+<li>Sprint Cohesion and continuous development</li>
+</ul>
+<h2 id="disadvantages">Disadvantages</h2>
+<ul>
+<li>It&rsquo;s a more time-consuming method</li>
+</ul>
+<h2 id="template">Template</h2>
+<p>The template can be different among teams, because each team has very different structure and business operation. An example will be the following:</p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">## Ticket Link
+
+## Problem 
+Describe the problem or business need.
+
+## Proposed Solution
+Describe the solution and the technical approach to the problem.
+
+### Artifacts
+Import the Diagram that justifies the solution.
+
+### Endpoint(s)
+Analyze the possible endpoint request structure with the relative payload and method. 
+Analyze all the success and error response(s).
+
+### Database Changes
+Write down all the possible changes to the database 
+
+### Event Message Payload
+Analyze the possible event message at the relative topic. 
+
+## Affected Components/Services
+Describe all the affected components or other microservices that will be impacted by this solution.
+
+## Attention needed
+Recognize possible code refactorings or important things that should be communicated before the implementation. This will help the code reviewers.
+
+## Next Steps/ Improvements
+Write down the possible improvements and the remaining work.
+</code></pre></div>
+		</section>
+
+		<div class="post-tags">
+			
+			
+			<nav class="nav tags">
+				<ul class="tags">
+					
+					<li><a href="/tags/agile">agile</a></li>
+					
+					<li><a href="/tags/dbd">DBD</a></li>
+					
+				</ul>
+			</nav>
+			
+			
+		</div>
+	</article>
+</main>
+<footer>
+<hr><a class="soc" href="https://github.com/tomchavakis" title="GitHub"><i data-feather="github"></i></a>|<a class="soc" href="https://twitter.com/TomChavakis" title="Twitter"><i data-feather="twitter"></i></a>|⚡️
+	2020  <a href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
+</footer>
+
+
+<script>
+      feather.replace()
+</script></div>
+    </body>
+</html>
