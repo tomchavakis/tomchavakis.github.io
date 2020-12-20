@@ -8,15 +8,14 @@
     <language>en-us</language>
     <lastBuildDate>Fri, 18 Dec 2020 12:18:30 +0530</lastBuildDate><atom:link href="https://tomchavakis.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Collaborative Documentation Driven Development</title>
+      <title>Documentation Before Development</title>
       <link>https://tomchavakis.github.io/posts/collaborative-documentation-driven-development/</link>
       <pubDate>Fri, 18 Dec 2020 12:18:30 +0530</pubDate>
       
       <guid>https://tomchavakis.github.io/posts/collaborative-documentation-driven-development/</guid>
-      <description>Introduction Collaborative Documentation Driven Development (CDDD), is an agile way of working within a software development team.
-Every agile team in the software industry has to create software products, versions, and releases are released quickly and frequently.
-This invention occurred because the software teams start the development phase without analyzing in depth what is going to be delivered.
-Here comes this process, in which you have to document the technical implementation.</description>
+      <description>Introduction Documentation Before Development (DBD), is an agile way of working within a software development team.
+Every agile team in the software industry has to release products quickly and frequently, and usually documents the processes followed at the very end of the project.
+The DBD process was created to address the problems arising when software teams start the delopment phase without analyzing in depth what is going to be delivered.</description>
     </item>
     
     <item>
