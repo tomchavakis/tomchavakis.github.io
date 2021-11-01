@@ -2,7 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>https://tomchavakis.github.io/tags/agile/</loc>
+    <lastmod>2021-11-01T11:40:49+02:00</lastmod>
+  </url><url>
     <loc>https://tomchavakis.github.io/posts/</loc>
+    <lastmod>2021-11-01T11:40:49+02:00</lastmod>
+  </url><url>
+    <loc>https://tomchavakis.github.io/tags/software-development/</loc>
+    <lastmod>2021-11-01T11:40:49+02:00</lastmod>
+  </url><url>
+    <loc>https://tomchavakis.github.io/tags/</loc>
     <lastmod>2021-11-01T11:40:49+02:00</lastmod>
   </url><url>
     <loc>https://tomchavakis.github.io/</loc>
@@ -11,16 +20,16 @@
     <loc>https://tomchavakis.github.io/posts/visual-studio-code-for-coding-teams/</loc>
     <lastmod>2021-11-01T11:40:49+02:00</lastmod>
   </url><url>
-    <loc>https://tomchavakis.github.io/tags/agile/</loc>
-    <lastmod>2020-12-18T12:18:30+05:30</lastmod>
+    <loc>https://tomchavakis.github.io/tags/visual-studio-extensions/</loc>
+    <lastmod>2021-11-01T11:40:49+02:00</lastmod>
+  </url><url>
+    <loc>https://tomchavakis.github.io/tags/vscode/</loc>
+    <lastmod>2021-11-01T11:40:49+02:00</lastmod>
   </url><url>
     <loc>https://tomchavakis.github.io/tags/dbd/</loc>
     <lastmod>2020-12-18T12:18:30+05:30</lastmod>
   </url><url>
     <loc>https://tomchavakis.github.io/posts/documentation-before-development/</loc>
-    <lastmod>2020-12-18T12:18:30+05:30</lastmod>
-  </url><url>
-    <loc>https://tomchavakis.github.io/tags/</loc>
     <lastmod>2020-12-18T12:18:30+05:30</lastmod>
   </url><url>
     <loc>https://tomchavakis.github.io/tags/alter/</loc>
