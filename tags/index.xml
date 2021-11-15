@@ -1,92 +1,70 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Tags on Thomas Chavakis</title>
-    <link>https://tomchavakis.github.io/tags/</link>
-    <description>Recent content in Tags on Thomas Chavakis</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Mon, 01 Nov 2021 11:40:49 +0200</lastBuildDate><atom:link href="https://tomchavakis.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>agile</title>
-      <link>https://tomchavakis.github.io/tags/agile/</link>
-      <pubDate>Mon, 01 Nov 2021 11:40:49 +0200</pubDate>
-      
-      <guid>https://tomchavakis.github.io/tags/agile/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>software-development</title>
-      <link>https://tomchavakis.github.io/tags/software-development/</link>
-      <pubDate>Mon, 01 Nov 2021 11:40:49 +0200</pubDate>
-      
-      <guid>https://tomchavakis.github.io/tags/software-development/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>visual studio extensions</title>
-      <link>https://tomchavakis.github.io/tags/visual-studio-extensions/</link>
-      <pubDate>Mon, 01 Nov 2021 11:40:49 +0200</pubDate>
-      
-      <guid>https://tomchavakis.github.io/tags/visual-studio-extensions/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>vscode</title>
-      <link>https://tomchavakis.github.io/tags/vscode/</link>
-      <pubDate>Mon, 01 Nov 2021 11:40:49 +0200</pubDate>
-      
-      <guid>https://tomchavakis.github.io/tags/vscode/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>DBD</title>
-      <link>https://tomchavakis.github.io/tags/dbd/</link>
-      <pubDate>Fri, 18 Dec 2020 12:18:30 +0530</pubDate>
-      
-      <guid>https://tomchavakis.github.io/tags/dbd/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>alter</title>
-      <link>https://tomchavakis.github.io/tags/alter/</link>
-      <pubDate>Thu, 19 Nov 2020 12:13:30 +0530</pubDate>
-      
-      <guid>https://tomchavakis.github.io/tags/alter/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>gh-ost</title>
-      <link>https://tomchavakis.github.io/tags/gh-ost/</link>
-      <pubDate>Thu, 19 Nov 2020 12:13:30 +0530</pubDate>
-      
-      <guid>https://tomchavakis.github.io/tags/gh-ost/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>mysql</title>
-      <link>https://tomchavakis.github.io/tags/mysql/</link>
-      <pubDate>Thu, 19 Nov 2020 12:13:30 +0530</pubDate>
-      
-      <guid>https://tomchavakis.github.io/tags/mysql/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>percona-tools</title>
-      <link>https://tomchavakis.github.io/tags/percona-tools/</link>
-      <pubDate>Thu, 19 Nov 2020 12:13:30 +0530</pubDate>
-      
-      <guid>https://tomchavakis.github.io/tags/percona-tools/</guid>
-      <description></description>
-    </item>
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Tags - Tag - Thomas Chavakis</title>
+        <link>https://tomchavakis.github.io/tags/</link>
+        <description>Tags - Tag - Thomas Chavakis</description>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 01 Nov 2021 11:40:49 &#43;0200</lastBuildDate><atom:link href="https://tomchavakis.github.io/tags/" rel="self" type="application/rss+xml" /><item>
+    <title>agile</title>
+    <link>https://tomchavakis.github.io/tags/agile/</link>
+    <pubDate>Mon, 01 Nov 2021 11:40:49 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://tomchavakis.github.io/tags/agile/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>software-development</title>
+    <link>https://tomchavakis.github.io/tags/software-development/</link>
+    <pubDate>Mon, 01 Nov 2021 11:40:49 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://tomchavakis.github.io/tags/software-development/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>visual studio extensions</title>
+    <link>https://tomchavakis.github.io/tags/visual-studio-extensions/</link>
+    <pubDate>Mon, 01 Nov 2021 11:40:49 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://tomchavakis.github.io/tags/visual-studio-extensions/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>vscode</title>
+    <link>https://tomchavakis.github.io/tags/vscode/</link>
+    <pubDate>Mon, 01 Nov 2021 11:40:49 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://tomchavakis.github.io/tags/vscode/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>DBD</title>
+    <link>https://tomchavakis.github.io/tags/dbd/</link>
+    <pubDate>Fri, 18 Dec 2020 12:18:30 &#43;0530</pubDate>
+    <author>Author</author>
+    <guid>https://tomchavakis.github.io/tags/dbd/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>alter</title>
+    <link>https://tomchavakis.github.io/tags/alter/</link>
+    <pubDate>Thu, 19 Nov 2020 12:13:30 &#43;0530</pubDate>
+    <author>Author</author>
+    <guid>https://tomchavakis.github.io/tags/alter/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>gh-ost</title>
+    <link>https://tomchavakis.github.io/tags/gh-ost/</link>
+    <pubDate>Thu, 19 Nov 2020 12:13:30 &#43;0530</pubDate>
+    <author>Author</author>
+    <guid>https://tomchavakis.github.io/tags/gh-ost/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>mysql</title>
+    <link>https://tomchavakis.github.io/tags/mysql/</link>
+    <pubDate>Thu, 19 Nov 2020 12:13:30 &#43;0530</pubDate>
+    <author>Author</author>
+    <guid>https://tomchavakis.github.io/tags/mysql/</guid>
+    <description><![CDATA[]]></description>
+</item><item>
+    <title>percona-tools</title>
+    <link>https://tomchavakis.github.io/tags/percona-tools/</link>
+    <pubDate>Thu, 19 Nov 2020 12:13:30 &#43;0530</pubDate>
+    <author>Author</author>
+    <guid>https://tomchavakis.github.io/tags/percona-tools/</guid>
+    <description><![CDATA[]]></description>
+</item></channel>
 </rss>

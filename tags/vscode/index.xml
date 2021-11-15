@@ -1,21 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>vscode on Thomas Chavakis</title>
-    <link>https://tomchavakis.github.io/tags/vscode/</link>
-    <description>Recent content in vscode on Thomas Chavakis</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Mon, 01 Nov 2021 11:40:49 +0200</lastBuildDate><atom:link href="https://tomchavakis.github.io/tags/vscode/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Visual studio code extensions for teams</title>
-      <link>https://tomchavakis.github.io/posts/visual-studio-code-for-coding-teams/</link>
-      <pubDate>Mon, 01 Nov 2021 11:40:49 +0200</pubDate>
-      
-      <guid>https://tomchavakis.github.io/posts/visual-studio-code-for-coding-teams/</guid>
-      <description>What ? Visual Studio Code is a cross-platform code editor made by Microsoft. There are more than 30.000 Extensions available to the marketplace of the visual studio code which turns the tool into a powerful, multi-language and multipurpose IDE.
-The teams need to have common tools for the day to day work. When you change programs it&amp;rsquo;s easy to get distracted, lose your focus and your purpose. With the following extensions, you can do the biggest part of your work within the visual studio code.</description>
-    </item>
-    
-  </channel>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>vscode - Tag - Thomas Chavakis</title>
+        <link>https://tomchavakis.github.io/tags/vscode/</link>
+        <description>vscode - Tag - Thomas Chavakis</description>
+        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 01 Nov 2021 11:40:49 &#43;0200</lastBuildDate><atom:link href="https://tomchavakis.github.io/tags/vscode/" rel="self" type="application/rss+xml" /><item>
+    <title>Visual studio code extensions for teams</title>
+    <link>https://tomchavakis.github.io/posts/visual-studio-code-for-coding-teams/</link>
+    <pubDate>Mon, 01 Nov 2021 11:40:49 &#43;0200</pubDate>
+    <author>Author</author>
+    <guid>https://tomchavakis.github.io/posts/visual-studio-code-for-coding-teams/</guid>
+    <description><![CDATA[What ? Visual Studio Code is a cross-platform code editor made by Microsoft. There are more than 30.000 Extensions available to the marketplace of the visual studio code which turns the tool into a powerful, multi-language and multipurpose IDE.
+The teams need to have common tools for the day to day work. When you change programs it&rsquo;s easy to get distracted, lose your focus and your purpose. With the following extensions, you can do the biggest part of your work within the visual studio code.]]></description>
+</item></channel>
 </rss>

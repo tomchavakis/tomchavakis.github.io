@@ -1,5 +1,44 @@
 <!DOCTYPE html>
-<html><head>
+<html lang="en-us">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="robots" content="noodp" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+        <title>How to optimally alter mysql tables using percona-tools - Thomas Chavakis</title><meta name="Description" content="Altering the schema in a table with a vast amount of data can take a lot of hours or even days to complete. You have to use the appropriate tools to perform this action like the percona-toolkit or gh-ost. This blog post include some examples and observations in order to run this tool with safety"><meta property="og:title" content="How to optimally alter mysql tables using percona-tools" />
+<meta property="og:description" content="Altering the schema in a table with a vast amount of data can take a lot of hours or even days to complete. You have to use the appropriate tools to perform this action like the percona-toolkit or gh-ost. This blog post include some examples and observations in order to run this tool with safety" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tomchavakis.github.io/posts/how-to-optimally-alter-mysql-tables-using-percona-tools/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2020-11-19T12:13:30+05:30" />
+<meta property="article:modified_time" content="2020-11-19T12:13:30+05:30" />
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="How to optimally alter mysql tables using percona-tools"/>
+<meta name="twitter:description" content="Altering the schema in a table with a vast amount of data can take a lot of hours or even days to complete. You have to use the appropriate tools to perform this action like the percona-toolkit or gh-ost. This blog post include some examples and observations in order to run this tool with safety"/>
+<meta name="application-name" content="Thomas Chavakis">
+<meta name="apple-mobile-web-app-title" content="Thomas Chavakis"><link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png"><link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png"><link rel="manifest" href="/site.webmanifest"><link rel="canonical" href="https://tomchavakis.github.io/posts/how-to-optimally-alter-mysql-tables-using-percona-tools/" /><link rel="next" href="https://tomchavakis.github.io/posts/documentation-before-development/" /><link rel="stylesheet" href="/lib/normalize/normalize.min.css"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/lib/fontawesome-free/all.min.css"><link rel="stylesheet" href="/lib/animate/animate.min.css"><script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "BlogPosting",
+        "headline": "How to optimally alter mysql tables using percona-tools",
+        "inLanguage": "en-us",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https:\/\/tomchavakis.github.io\/posts\/how-to-optimally-alter-mysql-tables-using-percona-tools\/"
+        },"genre": "posts","keywords": "mysql, alter, percona-tools, gh-ost","wordcount":  2402 ,
+        "url": "https:\/\/tomchavakis.github.io\/posts\/how-to-optimally-alter-mysql-tables-using-percona-tools\/","datePublished": "2020-11-19T12:13:30+05:30","dateModified": "2020-11-19T12:13:30+05:30","publisher": {
+            "@type": "Organization",
+            "name": "Author"},"author": {
+                "@type": "Person",
+                "name": "Author"
+            },"description": "Altering the schema in a table with a vast amount of data can take a lot of hours or even days to complete. You have to use the appropriate tools to perform this action like the percona-toolkit or gh-ost. This blog post include some examples and observations in order to run this tool with safety"
+    }
+    </script></head>
+    <body header-desktop="" header-mobile=""><script type="text/javascript">(window.localStorage && localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : ('dark' === 'auto' ? window.matchMedia('(prefers-color-scheme: dark)').matches : 'dark' === 'dark')) && document.body.setAttribute('theme', 'dark');</script>
+
+        <div id="mask"></div><div class="wrapper"><head>
 	<meta charset="utf-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge"><title>How to optimally alter mysql tables using percona-tools - Thomas Chavakis</title><meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -18,9 +57,10 @@
 	<meta property="og:title" content="How to optimally alter mysql tables using percona-tools" />
 <meta property="og:description" content="Altering the schema in a table with a vast amount of data can take a lot of hours or even days to complete. You have to use the appropriate tools to perform this action like the percona-toolkit or gh-ost. This blog post include some examples and observations in order to run this tool with safety" />
 <meta property="og:type" content="article" />
-<meta property="og:url" content="https://tomchavakis.github.io/posts/how-to-optimally-alter-mysql-tables-using-percona-tools/" />
+<meta property="og:url" content="https://tomchavakis.github.io/posts/how-to-optimally-alter-mysql-tables-using-percona-tools/" /><meta property="article:section" content="posts" />
 <meta property="article:published_time" content="2020-11-19T12:13:30+05:30" />
 <meta property="article:modified_time" content="2020-11-19T12:13:30+05:30" />
+
 <meta name="twitter:card" content="summary"/>
 <meta name="twitter:title" content="How to optimally alter mysql tables using percona-tools"/>
 <meta name="twitter:description" content="Altering the schema in a table with a vast amount of data can take a lot of hours or even days to complete. You have to use the appropriate tools to perform this action like the percona-toolkit or gh-ost. This blog post include some examples and observations in order to run this tool with safety"/>
@@ -28,8 +68,7 @@
 	
 	<link href="https://tomchavakis.github.io/css/fonts.css" rel="stylesheet">
 	
-	<link rel="stylesheet" type="text/css" media="screen" href="https://tomchavakis.github.io/css/main.css" /><link rel="stylesheet" type="text/css" href="https://tomchavakis.github.io/css/dark.css" media="(prefers-color-scheme: dark)" />
-	
+	<link rel="stylesheet" type="text/css" media="screen" href="https://tomchavakis.github.io/css/main.css" />
 	
 	
 	<script async src="https://www.googletagmanager.com/gtag/js?id=G-BWLJ0G5LFN"></script>
@@ -41,36 +80,33 @@
 	gtag('config', 'G-BWLJ0G5LFN');
 	</script>
 </head>
-<body>
-        <div class="content"><header>
-	<div class="main">
-		<a href="https://tomchavakis.github.io/">Thomas Chavakis</a>
-	</div>
-	<nav>
-		
-		<a href="/">Home</a>
-		
-		<a href="/posts">Posts</a>
-		
-		<a href="/projects">Projects</a>
-		
-		<a href="/other">Other</a>
-		
-		<a href="/about">About</a>
-		
-	</nav>
-</header>
+<main class="main">
+                <div class="container"><div class="toc" id="toc-auto">
+            <h2 class="toc-title">Contents</h2>
+            <div class="toc-content" id="toc-content-auto"></div>
+        </div><article class="page single"><h1 class="single-title animated flipInX">How to optimally alter mysql tables using percona-tools</h1><div class="post-meta">
+            <div class="post-meta-line"><span class="post-author"><a href="/" title="Author" rel=" author" class="author"><i class="fas fa-user-circle fa-fw"></i></a></span></div>
+            <div class="post-meta-line"><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime="2020-11-19">2020-11-19</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;2402 words&nbsp;
+                <i class="far fa-clock fa-fw"></i>&nbsp;12 minutes&nbsp;</div>
+        </div><div class="details toc" id="toc-static"  kept="">
+                <div class="details-summary toc-title">
+                    <span>Contents</span>
+                    <span><i class="details-icon fas fa-angle-right"></i></span>
+                </div>
+                <div class="details-content toc-content" id="toc-content-static"><nav id="TableOfContents">
+  <ul>
+    <li><a href="#1-mysql-ddl-feature">1. MySQL DDL Feature</a></li>
+    <li><a href="#2-percona-tools">2. PERCONA TOOLS</a></li>
+    <li><a href="#3-gh-ost">3. gh-ost</a></li>
+  </ul>
 
-<main>
-	<article>
-		<div class="title">
-			<h1 class="title">How to optimally alter mysql tables using percona-tools</h1>
-			<div class="meta">Posted on Nov 19, 2020</div>
-		</div>
-		
-
-		<section class="body">
-			<h1 id="introduction">Introduction</h1>
+  <ul>
+    <li><a href="#1-show-processlist">1. SHOW PROCESSLIST</a></li>
+    <li><a href="#2-information_schema">2. INFORMATION_SCHEMA</a></li>
+    <li><a href="#3-performance_schema">3. PERFORMANCE_SCHEMA</a></li>
+  </ul>
+</nav></div>
+            </div><div class="content" id="content"><h1 id="introduction">Introduction</h1>
 <p>You have to be very carefull when you are going to run an ALTER Table in the production Database.
 MySQL&rsquo;s ALTER TABLE can become a serious problem especially with very large tables.
 Many people have experience with ALTER TABLE operations that have taken hours or days to complete.</p>
@@ -94,25 +130,43 @@ The operations are processed using one of the following algorithms:</p>
 <li>Less disk space usage and I/O overhead than the table-copy method.</li>
 </ul>
 <p>You can control aspects of a DDL operation using the ALGORITHM and LOCK clauses of the ALTER TABLE statement. These clauses are placed at the end of the statement, separated from the table and column specifications by commas. For example:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">ALTER TABLE tbl_name ADD PRIMARY KEY (column), ALGORITHM=INPLACE, LOCK=NONE;
-</code></pre></div><p>The LOCK clause is useful for fine-tuning the degree of concurrent access to the table. The ALGORITHM clause is primarily intended for performance comparisons and as a fallback to the older table-copying behavior in case you encounter any issues. For example:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">ALTER TABLE tbl_name ADD PRIMARY KEY (column), ALGORITHM=INPLACE, LOCK=NONE;
+</code></pre></td></tr></table>
+</div>
+</div><p>The LOCK clause is useful for fine-tuning the degree of concurrent access to the table. The ALGORITHM clause is primarily intended for performance comparisons and as a fallback to the older table-copying behavior in case you encounter any issues. For example:</p>
 <ul>
 <li>To avoid accidentally making the table unavailable for reads, writes, or both, specify a clause on the ALTER TABLE statement such as LOCK=NONE (permit reads and writes) or LOCK=SHARED (permit reads). The operation halts immediately if the requested level of concurrency is not available.</li>
 <li>To compare performance, run a statement with ALGORITHM=INPLACE and ALGORITHM=COPY. Alternatively, run a statement with the old_alter_table configuration option disabled and enabled.</li>
 <li>To avoid tying up the server with an ALTER TABLE operation that copies the table, include ALGORITHM=INPLACE. The statement halts immediately if it cannot use the in-place mechanism.</li>
 </ul>
 <p>For more take a look at the documentation:</p>
-<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-online-ddl.html">https://dev.mysql.com/doc/refman/5.6/en/innodb-online-ddl.html</a></p>
-<p><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html">https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html</a></p>
-<p><a href="https://medium.com/@soomiq/why-you-should-not-use-mysql-5-6-online-ddl-on-aws-aurora-40985d5e90f5">https://medium.com/@soomiq/why-you-should-not-use-mysql-5-6-online-ddl-on-aws-aurora-40985d5e90f5</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-online-ddl.html" target="_blank" rel="noopener noreffer">https://dev.mysql.com/doc/refman/5.6/en/innodb-online-ddl.html</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html" target="_blank" rel="noopener noreffer">https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html</a></p>
+<p><a href="https://medium.com/@soomiq/why-you-should-not-use-mysql-5-6-online-ddl-on-aws-aurora-40985d5e90f5" target="_blank" rel="noopener noreffer">https://medium.com/@soomiq/why-you-should-not-use-mysql-5-6-online-ddl-on-aws-aurora-40985d5e90f5</a></p>
 <h2 id="2-percona-tools">2. PERCONA TOOLS</h2>
 <p>You need to download the latest percona toolkit or get the latest release from the command line:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">wget percona.com/get/percona-toolkit.tar.gz
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">wget percona.com/get/percona-toolkit.tar.gz
 
 wget percona.com/get/percona-toolkit.rpm
 
 wget percona.com/get/percona-toolkit.deb
-</code></pre></div><p><strong>pt-online-schema-change - ALTER tables without locking them.</strong></p>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>pt-online-schema-change - ALTER tables without locking them.</strong></p>
 <p>pt-online-schema-change emulates the way that MySQL alters tables internally, but it works on a copy of the table you wish to alter. This means that the original table is not locked, and clients may continue to read and change data in it.</p>
 <p><code>pt-online-schema-change</code> works by</p>
 <ol>
@@ -139,34 +193,73 @@ wget percona.com/get/percona-toolkit.deb
 <li>Process</li>
 <li>Replication_slave</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">Dry Run:
-=========================
-
-PTDEBUG=1 pt-online-schema-change --progress=percentage,10 --alter=&#39;CHANGE COLUMN `trigger` `trigger` ENUM(&#34;a&#34;,&#34;b&#34;,&#34;c&#34;,&#34;d&#34;,&#34;e&#34;)&#39; --alter-foreign-keys-method=auto h=127.0.0.1,P=3306,D=imdb,t=app_events_relevant,u=root --dry-run --ask-pass --no-check-foreign-keys --critical-load=Threads_running=200 --chunk-size=200
-
-=========================
-Operation, tries, wait:
-  analyze_table, 10, 1
-  copy_rows, 10, 0.25
-  create_triggers, 10, 1
-  drop_triggers, 10, 1
-  swap_tables, 10, 1
-  update_foreign_keys, 10, 1
-No foreign keys reference `imdb`.`app_events_relevant`; ignoring --alter-foreign-keys-method.
-Starting a dry run.  `imdb`.`app_events_relevant` will not be altered.  Specify --execute instead of --dry-run to alter the table.
-Creating new table...
-Created new table imdb._app_events_relevant_new OK.
-Altering new table...
-Altered `imdb`.`_app_events_relevant_new` OK.
-Not creating triggers because this is a dry run.
-Not copying rows because this is a dry run.
-Not swapping tables because this is a dry run.
-Not dropping old table because this is a dry run.
-Not dropping triggers because this is a dry run.
-2020-11-14T13:56:52 Dropping new table...
-2020-11-14T13:56:52 Dropped new table OK.
-Dry run complete.  `imdb`.`app_events_relevant` was not altered.
-</code></pre></div><p><strong>FLAGS</strong>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="n">Dry</span><span class="w"> </span><span class="n">Run</span><span class="p">:</span><span class="w">
+</span><span class="w"></span><span class="o">=========================</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="n">PTDEBUG</span><span class="o">=</span><span class="mi">1</span><span class="w"> </span><span class="n">pt</span><span class="o">-</span><span class="n">online</span><span class="o">-</span><span class="k">schema</span><span class="o">-</span><span class="k">change</span><span class="w"> </span><span class="o">--</span><span class="n">progress</span><span class="o">=</span><span class="n">percentage</span><span class="p">,</span><span class="mi">10</span><span class="w"> 
+</span><span class="w"></span><span class="o">--</span><span class="k">alter</span><span class="o">=</span><span class="s1">&#39;CHANGE COLUMN `trigger` `trigger` ENUM(&#34;a&#34;,&#34;b&#34;,&#34;c&#34;,&#34;d&#34;,&#34;e&#34;)&#39;</span><span class="w"> 
+</span><span class="w"></span><span class="o">--</span><span class="k">alter</span><span class="o">-</span><span class="k">foreign</span><span class="o">-</span><span class="k">keys</span><span class="o">-</span><span class="n">method</span><span class="o">=</span><span class="n">auto</span><span class="w"> </span><span class="n">h</span><span class="o">=</span><span class="mi">127</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">1</span><span class="p">,</span><span class="n">P</span><span class="o">=</span><span class="mi">3306</span><span class="p">,</span><span class="n">D</span><span class="o">=</span><span class="n">imdb</span><span class="p">,</span><span class="n">t</span><span class="o">=</span><span class="n">app_events_relevant</span><span class="p">,</span><span class="n">u</span><span class="o">=</span><span class="n">root</span><span class="w"> 
+</span><span class="w"></span><span class="o">--</span><span class="n">dry</span><span class="o">-</span><span class="n">run</span><span class="w"> </span><span class="o">--</span><span class="n">ask</span><span class="o">-</span><span class="n">pass</span><span class="w"> </span><span class="o">--</span><span class="n">no</span><span class="o">-</span><span class="k">check</span><span class="o">-</span><span class="k">foreign</span><span class="o">-</span><span class="k">keys</span><span class="w"> </span><span class="o">--</span><span class="n">critical</span><span class="o">-</span><span class="k">load</span><span class="o">=</span><span class="n">Threads_running</span><span class="o">=</span><span class="mi">200</span><span class="w"> </span><span class="o">--</span><span class="n">chunk</span><span class="o">-</span><span class="n">size</span><span class="o">=</span><span class="mi">200</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="o">=========================</span><span class="w">
+</span><span class="w"></span><span class="n">Operation</span><span class="p">,</span><span class="w"> </span><span class="n">tries</span><span class="p">,</span><span class="w"> </span><span class="n">wait</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="n">analyze_table</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="w">  </span><span class="n">copy_rows</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">.</span><span class="mi">25</span><span class="w">
+</span><span class="w">  </span><span class="n">create_triggers</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="w">  </span><span class="n">drop_triggers</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="w">  </span><span class="n">swap_tables</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="w">  </span><span class="n">update_foreign_keys</span><span class="p">,</span><span class="w"> </span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="w">
+</span><span class="w"></span><span class="n">No</span><span class="w"> </span><span class="k">foreign</span><span class="w"> </span><span class="k">keys</span><span class="w"> </span><span class="n">reference</span><span class="w"> </span><span class="o">`</span><span class="n">imdb</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">app_events_relevant</span><span class="o">`</span><span class="p">;</span><span class="w"> </span><span class="n">ignoring</span><span class="w"> </span><span class="o">--</span><span class="k">alter</span><span class="o">-</span><span class="k">foreign</span><span class="o">-</span><span class="k">keys</span><span class="o">-</span><span class="n">method</span><span class="p">.</span><span class="w">
+</span><span class="w"></span><span class="k">Starting</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">dry</span><span class="w"> </span><span class="n">run</span><span class="p">.</span><span class="w">  </span><span class="o">`</span><span class="n">imdb</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">app_events_relevant</span><span class="o">`</span><span class="w"> </span><span class="n">will</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">be</span><span class="w"> </span><span class="n">altered</span><span class="p">.</span><span class="w">  </span><span class="n">Specify</span><span class="w"> </span><span class="o">--</span><span class="n">execute</span><span class="w"> </span><span class="n">instead</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="o">--</span><span class="n">dry</span><span class="o">-</span><span class="n">run</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="k">table</span><span class="p">.</span><span class="w">
+</span><span class="w"></span><span class="n">Creating</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="k">table</span><span class="p">...</span><span class="w">
+</span><span class="w"></span><span class="n">Created</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">imdb</span><span class="p">.</span><span class="n">_app_events_relevant_new</span><span class="w"> </span><span class="n">OK</span><span class="p">.</span><span class="w">
+</span><span class="w"></span><span class="n">Altering</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="k">table</span><span class="p">...</span><span class="w">
+</span><span class="w"></span><span class="n">Altered</span><span class="w"> </span><span class="o">`</span><span class="n">imdb</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">_app_events_relevant_new</span><span class="o">`</span><span class="w"> </span><span class="n">OK</span><span class="p">.</span><span class="w">
+</span><span class="w"></span><span class="k">Not</span><span class="w"> </span><span class="n">creating</span><span class="w"> </span><span class="n">triggers</span><span class="w"> </span><span class="n">because</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">dry</span><span class="w"> </span><span class="n">run</span><span class="p">.</span><span class="w">
+</span><span class="w"></span><span class="k">Not</span><span class="w"> </span><span class="n">copying</span><span class="w"> </span><span class="n">rows</span><span class="w"> </span><span class="n">because</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">dry</span><span class="w"> </span><span class="n">run</span><span class="p">.</span><span class="w">
+</span><span class="w"></span><span class="k">Not</span><span class="w"> </span><span class="n">swapping</span><span class="w"> </span><span class="kp">tables</span><span class="w"> </span><span class="n">because</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">dry</span><span class="w"> </span><span class="n">run</span><span class="p">.</span><span class="w">
+</span><span class="w"></span><span class="k">Not</span><span class="w"> </span><span class="n">dropping</span><span class="w"> </span><span class="n">old</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">because</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">dry</span><span class="w"> </span><span class="n">run</span><span class="p">.</span><span class="w">
+</span><span class="w"></span><span class="k">Not</span><span class="w"> </span><span class="n">dropping</span><span class="w"> </span><span class="n">triggers</span><span class="w"> </span><span class="n">because</span><span class="w"> </span><span class="n">this</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="n">a</span><span class="w"> </span><span class="n">dry</span><span class="w"> </span><span class="n">run</span><span class="p">.</span><span class="w">
+</span><span class="w"></span><span class="mi">2020</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">14</span><span class="n">T13</span><span class="p">:</span><span class="mi">56</span><span class="p">:</span><span class="mi">52</span><span class="w"> </span><span class="n">Dropping</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="k">table</span><span class="p">...</span><span class="w">
+</span><span class="w"></span><span class="mi">2020</span><span class="o">-</span><span class="mi">11</span><span class="o">-</span><span class="mi">14</span><span class="n">T13</span><span class="p">:</span><span class="mi">56</span><span class="p">:</span><span class="mi">52</span><span class="w"> </span><span class="n">Dropped</span><span class="w"> </span><span class="n">new</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="n">OK</span><span class="p">.</span><span class="w">
+</span><span class="w"></span><span class="n">Dry</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="n">complete</span><span class="p">.</span><span class="w">  </span><span class="o">`</span><span class="n">imdb</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">app_events_relevant</span><span class="o">`</span><span class="w"> </span><span class="n">was</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="n">altered</span><span class="p">.</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p><strong>FLAGS</strong>:</p>
 <p>if everything is ok, change <code>--dry-run</code> by <code>--execute</code> and the process will start.</p>
 <p><code>--alter-foreign-keys-method=rebuild_constraints</code></p>
 <p>This is the preferred approach for the reason it maintains the consistency of the schema and its relations. In this approach, before dropping the old table, it runs ALTER on all the child tables to drop existing FK and re-add new FK constraints that points to the columns from the new table (with the schema change in place).</p>
@@ -183,19 +276,43 @@ default: Threads_running=25</p>
 <li>In case that you have a Replication Database it would be nice to check the replication lag and adjust the chunk-size accordingly</li>
 </ul>
 <p>Using TMUX:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">tmux
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">tmux
 pt-online-schema-change --progress=percentage,10 -- .......
 ===&gt;
 tmux ls
 tmux attach-session -t 0
-</code></pre></div><p><a href="https://www.youtube.com/watch?v=Z8QsKBoRnP0">https://www.youtube.com/watch?v=Z8QsKBoRnP0</a>
+</code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.youtube.com/watch?v=Z8QsKBoRnP0" target="_blank" rel="noopener noreffer">https://www.youtube.com/watch?v=Z8QsKBoRnP0</a>
 52:47 min</p>
-<p><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html">pt-online-schema-change</a></p>
+<p><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html" target="_blank" rel="noopener noreffer">pt-online-schema-change</a></p>
 <h2 id="3-gh-ost">3. gh-ost</h2>
 <p>GitHub&rsquo;s online schema migration for MySQL</p>
 <p>gh-ost uses the binary log stream to capture table changes, and asynchronously applies them onto the ghost table. gh-ost takes upon itself some tasks that other tools leave for the database to perform. As result, gh-ost has greater control over the migration process; can truly suspend it; can truly decouple the migration&rsquo;s write load from the master&rsquo;s workload.</p>
 <p>Using gh-ost for online schema change</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">gh-ost -allow-on-master -assume-rbr -exact-rowcount 
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">gh-ost -allow-on-master -assume-rbr -exact-rowcount 
     -critical-load Threads_running=400 -critical-load-hibernate-seconds 60 
     -database ghost -max-load Threads_running=100 -nice-ratio 0.1 
     -chunk-size 5000 -ask-pass -table sbtest1 -user percona 
@@ -204,9 +321,22 @@ tmux attach-session -t 0
     -throttle-additional-flag-file /home/ubuntu/gh-ost-throttle_ghost.sbtest1 
     -alter &#39;ADD COLUMN ts TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP&#39; 
     -verbose -execute 2&gt;&amp;1 | tee gh-ost.log
-</code></pre></div><p>Example:</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">./gh-ost --allow-on-master -assume-rbr -exact-rowcount --chunk-size=5000 --host=10.1.0.132:3316 --database=sandbox_vcsl --table=notification_task  --user=root -ask-pass  --alter=&#34;&#39;CHANGE COLUMN &#39;trigger&#39; &#39;trigger&#39; enum(&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;,&#39;e&#39;,&#39;hq&#39;);&#39;&#34; --verbose
-</code></pre></div><p><code>--assume-rbr</code>  parameter is required to prevent gh-ost from trying to modify the binlog_format. It is not possible to do so directly in RDS/Aurora, as SUPER privilege is not available to end users.</p>
+</code></pre></td></tr></table>
+</div>
+</div><p>Example:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">./gh-ost --allow-on-master -assume-rbr -exact-rowcount --chunk-size=5000 --host=10.1.0.132:3316 
+--database=sandbox_vcsl --table=notification_task  --user=root -ask-pass  
+--alter=&#34;&#39;CHANGE COLUMN &#39;trigger&#39; &#39;trigger&#39; enum(&#39;a&#39;,&#39;b&#39;,&#39;c&#39;,&#39;d&#39;,&#39;e&#39;,&#39;hq&#39;);&#39;&#34; --verbose
+</code></pre></td></tr></table>
+</div>
+</div><p><code>--assume-rbr</code>  parameter is required to prevent gh-ost from trying to modify the binlog_format. It is not possible to do so directly in RDS/Aurora, as SUPER privilege is not available to end users.</p>
 <p><code>-allow-on-master</code>  simply indicates to the tool to run everything against the master.</p>
 <p><code>-database , -host , -user , -ask-pass  and -table</code>  are the target instance, credentials and table to make the modifications on.</p>
 <p><code>-critical-load , -max-load</code>  tell gh-ost to watch for these statuses and either abort the process when critical thresholds are reached, or throttle itself when max values are reached.</p>
@@ -217,13 +347,34 @@ tmux attach-session -t 0
 <h2 id="1-show-processlist">1. SHOW PROCESSLIST</h2>
 <p>The process list is the list of connections, or threads, that are currently connected to
 MySQL. SHOW PROCESSLIST lists the threads, with information about each thread’s status</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SHOW FULL PROCESSLIST;
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">SHOW FULL PROCESSLIST;
 SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE COMMAND != &#39;Sleep&#39;;
-</code></pre></div><h2 id="2-information_schema">2. INFORMATION_SCHEMA</h2>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="2-information_schema">2. INFORMATION_SCHEMA</h2>
 <p>The INFORMATION_SCHEMA database is a set of system views defined in the SQL standard.</p>
 <p>The beauty of the INFORMATION_SCHEMA views is that you can query them with standard SQL. This gives you much more flexibility than the SHOW commands, which produce result sets that you can’t aggregate, join, or otherwise manipulate with standard
 SQL. Having all this data available in system views makes it possible to write interesting and useful queries.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">-- INNODB Metrics
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">-- INNODB Metrics
 SELECT * FROM INFORMATION_SCHEMA.INNODB_METRICS;
 
 -- Shows all queries running for 5 seconds or more:
@@ -232,93 +383,150 @@ SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE COMMAND != &#39;Sleep&#39; AN
 -- Show all running UPDATEs:
 SELECT * FROM INFORMATION_SCHEMA.PROCESSLIST WHERE COMMAND != &#39;Sleep&#39; AND INFO LIKE &#39;%UPDATE %&#39;;
 
-</code></pre></div><h2 id="3-performance_schema">3. PERFORMANCE_SCHEMA</h2>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SELECT * FROM `performance_schema`.`threads`;
-</code></pre></div><p>querying the Performance Schema events_stages_current table.</p>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SELECT EVENT_NAME, WORK_COMPLETED, WORK_ESTIMATED FROM performance_schema.events_stages_current;
-</code></pre></div><ul>
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="3-performance_schema">3. PERFORMANCE_SCHEMA</h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="o">`</span><span class="n">performance_schema</span><span class="o">`</span><span class="p">.</span><span class="o">`</span><span class="n">threads</span><span class="o">`</span><span class="p">;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>querying the Performance Schema events_stages_current table.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">SELECT EVENT_NAME, WORK_COMPLETED, WORK_ESTIMATED FROM performance_schema.events_stages_current;
+</code></pre></td></tr></table>
+</div>
+</div><ul>
 <li>The stage event shown differs depending on which ALTER TABLE phase is currently in progress. The <code>WORK_COMPLETED</code> column shows the work completed.</li>
 <li>The <code>WORK_ESTIMATED</code> column provides an estimate of the remaining work.</li>
 <li>The <code>events_stages_current</code> table returns an empty set if the ALTER TABLE operation has completed. In this case, you can check the events_stages_history table to view event data for the completed operation.</li>
 </ul>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SELECT EVENT_NAME, WORK_COMPLETED, WORK_ESTIMATED FROM performance_schema.events_stages_history;
-</code></pre></div><hr>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">SELECT EVENT_NAME, WORK_COMPLETED, WORK_ESTIMATED FROM performance_schema.events_stages_history;
+</code></pre></td></tr></table>
+</div>
+</div><hr>
 <h1 id="useful-commands-for-this-process">Useful Commands for this process</h1>
 <h1 id="1-find-the-size-of-databases">1. Find the Size of Databases</h1>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SELECT table_schema AS &#34;Database&#34;, 
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">SELECT table_schema AS &#34;Database&#34;, 
 ROUND(SUM(data_length + index_length) / 1024 / 1024, 2) AS &#34;Size (MB)&#34; 
 FROM information_schema.TABLES 
 GROUP BY table_schema;
-</code></pre></div><h1 id="2-find-the-size-of-tables">2. Find the Size of Tables</h1>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">SELECT
-  TABLE_NAME AS `Table`,
-  ROUND((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024) AS `Size (MB)`
-FROM
-  information_schema.TABLES
-WHERE
-  TABLE_SCHEMA = &#34;TalkingData&#34;
-ORDER BY
-  (DATA_LENGTH + INDEX_LENGTH)
-DESC;
-</code></pre></div><h1 id="3-export">3. Export</h1>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">mysqldump --add-drop-table -h SERVER -u USERNAME -p DB TABLE &gt; talkingData.sql
-</code></pre></div><h1 id="4-import">4. Import</h1>
-<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-fallback" data-lang="fallback">mysql -u root -p --host=127.0.0.1 --port=3306 imdb &lt; talkingData.sql
-</code></pre></div><h1 id="big-dataset-for-testing">Big dataset for Testing</h1>
-<p><a href="https://archive.org/details/stackexchange">https://archive.org/details/stackexchange</a></p>
-<p><a href="https://www.percona.com/blog/2011/02/01/sample-datasets-for-benchmarking-and-testing/">https://www.percona.com/blog/2011/02/01/sample-datasets-for-benchmarking-and-testing/</a></p>
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="2-find-the-size-of-tables">2. Find the Size of Tables</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-mysql" data-lang="mysql"><span class="k">SELECT</span><span class="w">
+</span><span class="w">  </span><span class="n">TABLE_NAME</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="o">`</span><span class="k">Table</span><span class="o">`</span><span class="p">,</span><span class="w">
+</span><span class="w">  </span><span class="nf">ROUND</span><span class="p">((</span><span class="n">DATA_LENGTH</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">INDEX_LENGTH</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mi">1024</span><span class="p">)</span><span class="w"> </span><span class="k">AS</span><span class="w"> </span><span class="o">`</span><span class="nf">Size</span><span class="w"> </span><span class="p">(</span><span class="n">MB</span><span class="p">)</span><span class="o">`</span><span class="w">
+</span><span class="w"></span><span class="k">FROM</span><span class="w">
+</span><span class="w">  </span><span class="n">information_schema</span><span class="p">.</span><span class="kp">TABLES</span><span class="w">
+</span><span class="w"></span><span class="k">WHERE</span><span class="w">
+</span><span class="w">  </span><span class="n">TABLE_SCHEMA</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&#34;TalkingData&#34;</span><span class="w">
+</span><span class="w"></span><span class="k">ORDER</span><span class="w"> </span><span class="k">BY</span><span class="w">
+</span><span class="w">  </span><span class="p">(</span><span class="n">DATA_LENGTH</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">INDEX_LENGTH</span><span class="p">)</span><span class="w">
+</span><span class="w"></span><span class="k">DESC</span><span class="p">;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h1 id="3-export">3. Export</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mysqldump --add-drop-table -h SERVER -u USERNAME -p DB TABLE &gt; talkingData.sql
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="4-import">4. Import</h1>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">mysql -u root -p --host=127.0.0.1 --port=3306 imdb &lt; talkingData.sql
+</code></pre></td></tr></table>
+</div>
+</div><h1 id="big-dataset-for-testing">Big dataset for Testing</h1>
+<p><a href="https://archive.org/details/stackexchange" target="_blank" rel="noopener noreffer">https://archive.org/details/stackexchange</a></p>
+<p><a href="https://www.percona.com/blog/2011/02/01/sample-datasets-for-benchmarking-and-testing/" target="_blank" rel="noopener noreffer">https://www.percona.com/blog/2011/02/01/sample-datasets-for-benchmarking-and-testing/</a></p>
 <h1 id="references">References:</h1>
-<p><a href="https://www.goodreads.com/book/show/43244.High_Performance_MySQL?from_search=true&amp;from_srp=true&amp;qid=feJ3G2IgcO&amp;rank=1">High Performance MySQL</a>, Second Edition, by Baron Schwartz, Peter Zaitsev, Vadim Tkachenko, Jeremy D. Zawodny,
+<p><a href="https://www.goodreads.com/book/show/43244.High_Performance_MySQL?from_search=true&amp;from_srp=true&amp;qid=feJ3G2IgcO&amp;rank=1" target="_blank" rel="noopener noreffer">High Performance MySQL</a>, Second Edition, by Baron Schwartz, Peter Zaitsev, Vadim Tkachenko, Jeremy D. Zawodny,
 Arjen Lentz, and Derek J. Balling</p>
-<p><a href="https://www.percona.com/blog/2018/06/07/using-gh-ost-with-amazon-aurora-for-mysql/">https://www.percona.com/blog/2018/06/07/using-gh-ost-with-amazon-aurora-for-mysql/</a></p>
-<p><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html">https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html</a></p>
-<p><a href="https://github.com/github/gh-ost/">https://github.com/github/gh-ost/</a></p>
-<p><a href="https://github.com/github/gh-ost/blob/master/doc/rds.md">https://github.com/github/gh-ost/blob/master/doc/rds.md</a></p>
-<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-online-ddl.html">https://dev.mysql.com/doc/refman/5.6/en/innodb-online-ddl.html</a></p>
-<p><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html">https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html</a></p>
+<p><a href="https://www.percona.com/blog/2018/06/07/using-gh-ost-with-amazon-aurora-for-mysql/" target="_blank" rel="noopener noreffer">https://www.percona.com/blog/2018/06/07/using-gh-ost-with-amazon-aurora-for-mysql/</a></p>
+<p><a href="https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html" target="_blank" rel="noopener noreffer">https://www.percona.com/doc/percona-toolkit/LATEST/pt-online-schema-change.html</a></p>
+<p><a href="https://github.com/github/gh-ost/" target="_blank" rel="noopener noreffer">https://github.com/github/gh-ost/</a></p>
+<p><a href="https://github.com/github/gh-ost/blob/master/doc/rds.md" target="_blank" rel="noopener noreffer">https://github.com/github/gh-ost/blob/master/doc/rds.md</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/5.6/en/innodb-online-ddl.html" target="_blank" rel="noopener noreffer">https://dev.mysql.com/doc/refman/5.6/en/innodb-online-ddl.html</a></p>
+<p><a href="https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html" target="_blank" rel="noopener noreffer">https://dev.mysql.com/doc/refman/5.7/en/innodb-online-ddl-operations.html</a></p>
+</div><div class="post-footer" id="post-footer">
+    <div class="post-info">
+        <div class="post-info-line">
+            <div class="post-info-mod">
+                <span>Updated on 2020-11-19</span>
+            </div>
+            <div class="post-info-license"></div>
+        </div>
+        <div class="post-info-line">
+            <div class="post-info-md"></div>
+            <div class="post-info-share">
+                <span></span>
+            </div>
+        </div>
+    </div>
 
-		</section>
+    <div class="post-info-more">
+        <section class="post-tags"><i class="fas fa-tags fa-fw"></i>&nbsp;<a href="/tags/mysql/">mysql</a>,&nbsp;<a href="/tags/alter/">alter</a>,&nbsp;<a href="/tags/percona-tools/">percona-tools</a>,&nbsp;<a href="/tags/gh-ost/">gh-ost</a></section>
+        <section>
+            <span><a href="javascript:void(0);" onclick="window.history.back();">Back</a></span>&nbsp;|&nbsp;<span><a href="/">Home</a></span>
+        </section>
+    </div>
 
-		<div class="post-tags">
-			
-			
-			<nav class="nav tags">
-				<ul class="tags">
-					
-					<li><a href="/tags/mysql">mysql</a></li>
-					
-					<li><a href="/tags/alter">alter</a></li>
-					
-					<li><a href="/tags/percona-tools">percona-tools</a></li>
-					
-					<li><a href="/tags/gh-ost">gh-ost</a></li>
-					
-				</ul>
-			</nav>
-			
-			
-		</div>
-	</article>
-</main>
-<footer>
-<hr><a class="soc" href="https://github.com/tomchavakis" title="GitHub"><i data-feather="github"></i></a>|<a class="soc" href="https://twitter.com/TomChavakis" title="Twitter"><i data-feather="twitter"></i></a>|⚡️
-	2020  <a href="https://github.com/athul/archie">Archie Theme</a> | Built with <a href="https://gohugo.io">Hugo</a>
-</footer>
+    <div class="post-nav">
+            <a href="/posts/documentation-before-development/" class="next" rel="next" title="Documentation Before Development">Documentation Before Development<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+            </main><footer class="footer">
+        <div class="footer-container"><div class="footer-line">Powered by <a href="https://gohugo.io/" target="_blank" rel="noopener noreffer" title="Hugo 0.89.3">Hugo</a> | Theme - <a href="https://github.com/dillonzq/LoveIt" target="_blank" rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+                </div><div class="footer-line"><i class="far fa-copyright fa-fw"></i><span itemprop="copyrightYear">2020 - 2021</span><span class="author" itemprop="copyrightHolder">&nbsp;<a href="/" target="_blank"></a></span>&nbsp;|&nbsp;<span class="license"><a rel="license external nofollow noopener noreffer" href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span></div>
+        </div>
+    </footer></div>
 
-
-<script type="application/javascript">
-var doNotTrack = false;
-if (!doNotTrack) {
-	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
-	ga('create', 'G-BWLJ0G5LFN', 'auto');
-	
-	ga('send', 'pageview');
-}
-</script>
-<script async src='https://www.google-analytics.com/analytics.js'></script>
-
-<script>
-      feather.replace()
-</script></div>
-    </body>
+        <div id="fixed-buttons"><a href="#" id="back-to-top" class="fixed-button" title="Back to Top">
+                <i class="fas fa-arrow-up fa-fw"></i>
+            </a><a href="#" id="view-comments" class="fixed-button" title="View Comments">
+                <i class="fas fa-comment fa-fw"></i>
+            </a>
+        </div><script type="text/javascript" src="/lib/smooth-scroll/smooth-scroll.min.js"></script><script type="text/javascript" src="/lib/lazysizes/lazysizes.min.js"></script><script type="text/javascript" src="/lib/clipboard/clipboard.min.js"></script><script type="text/javascript">window.config={"code":{"copyTitle":"Copy to clipboard","maxShownLines":10},"comment":{}};</script><script type="text/javascript" src="/js/theme.min.js"></script></body>
 </html>
