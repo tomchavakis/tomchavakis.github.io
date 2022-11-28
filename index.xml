@@ -1,35 +1,83 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
-    <channel>
-        <title>Thomas Chavakis</title>
-        <link>https://tomchavakis.github.io/</link>
-        <description>Thomas Chavakis</description>
-        <generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 01 Nov 2021 11:40:49 &#43;0200</lastBuildDate>
-            <atom:link href="https://tomchavakis.github.io/index.xml" rel="self" type="application/rss+xml" />
-        <item>
-    <title>Visual studio code extensions for teams</title>
-    <link>https://tomchavakis.github.io/posts/visual-studio-code-for-coding-teams/</link>
-    <pubDate>Mon, 01 Nov 2021 11:40:49 &#43;0200</pubDate>
-    <author>Author</author>
-    <guid>https://tomchavakis.github.io/posts/visual-studio-code-for-coding-teams/</guid>
-    <description><![CDATA[What ? Visual Studio Code is a cross-platform code editor made by Microsoft. There are more than 30.000 Extensions available to the marketplace of the visual studio code which turns the tool into a powerful, multi-language and multipurpose IDE.
-The teams need to have common tools for the day to day work. When you change programs it&rsquo;s easy to get distracted, lose your focus and your purpose. With the following extensions, you can do the biggest part of your work within the visual studio code.]]></description>
-</item><item>
-    <title>Documentation Before Development</title>
-    <link>https://tomchavakis.github.io/posts/documentation-before-development/</link>
-    <pubDate>Fri, 18 Dec 2020 12:18:30 &#43;0530</pubDate>
-    <author>Author</author>
-    <guid>https://tomchavakis.github.io/posts/documentation-before-development/</guid>
-    <description><![CDATA[Introduction Documentation Before Development (DBD), is an agile way of working within a software development team.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Thomas Chavakis</title>
+    <link>https://tomchavakis.github.io/</link>
+    <description>Recent content on Thomas Chavakis</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 01 Nov 2021 11:40:49 +0200</lastBuildDate><atom:link href="https://tomchavakis.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Visual studio code extensions for teams</title>
+      <link>https://tomchavakis.github.io/posts/visual-studio-code-for-coding-teams/</link>
+      <pubDate>Mon, 01 Nov 2021 11:40:49 +0200</pubDate>
+      
+      <guid>https://tomchavakis.github.io/posts/visual-studio-code-for-coding-teams/</guid>
+      <description>What ? Visual Studio Code is a cross-platform code editor made by Microsoft. There are more than 30.000 Extensions available to the marketplace of the visual studio code which turns the tool into a powerful, multi-language and multipurpose IDE.
+The teams need to have common tools for the day to day work. When you change programs it&amp;rsquo;s easy to get distracted, lose your focus and your purpose. With the following extensions, you can do the biggest part of your work within the visual studio code.</description>
+    </item>
+    
+    <item>
+      <title>Documentation Before Development</title>
+      <link>https://tomchavakis.github.io/posts/documentation-before-development/</link>
+      <pubDate>Fri, 18 Dec 2020 12:18:30 +0530</pubDate>
+      
+      <guid>https://tomchavakis.github.io/posts/documentation-before-development/</guid>
+      <description>Introduction Documentation Before Development (DBD), is an agile way of working within a software development team.
 Every agile team in the software industry has to release products quickly and frequently, and usually documents the processes followed at the very end of the project.
-The DBD process was created to address the problems arising when software teams start the delopment phase without analyzing in depth what is going to be delivered.]]></description>
-</item><item>
-    <title>How to optimally alter mysql tables using percona-tools</title>
-    <link>https://tomchavakis.github.io/posts/how-to-optimally-alter-mysql-tables-using-percona-tools/</link>
-    <pubDate>Thu, 19 Nov 2020 12:13:30 &#43;0530</pubDate>
-    <author>Author</author>
-    <guid>https://tomchavakis.github.io/posts/how-to-optimally-alter-mysql-tables-using-percona-tools/</guid>
-    <description><![CDATA[Introduction You have to be very carefull when you are going to run an ALTER Table in the production Database. MySQL&rsquo;s ALTER TABLE can become a serious problem especially with very large tables. Many people have experience with ALTER TABLE operations that have taken hours or days to complete.
+The DBD process was created to address the problems arising when software teams start the delopment phase without analyzing in depth what is going to be delivered.</description>
+    </item>
+    
+    <item>
+      <title>How to optimally alter mysql tables using percona-tools</title>
+      <link>https://tomchavakis.github.io/posts/how-to-optimally-alter-mysql-tables-using-percona-tools/</link>
+      <pubDate>Thu, 19 Nov 2020 12:13:30 +0530</pubDate>
+      
+      <guid>https://tomchavakis.github.io/posts/how-to-optimally-alter-mysql-tables-using-percona-tools/</guid>
+      <description>Introduction You have to be very carefull when you are going to run an ALTER Table in the production Database. MySQL&amp;rsquo;s ALTER TABLE can become a serious problem especially with very large tables. Many people have experience with ALTER TABLE operations that have taken hours or days to complete.
 From the MySQL documentation for ALTER TABLE:
-ALTER TABLE changes the structure of a table. The operations are processed using one of the following algorithms:]]></description>
-</item></channel>
+ALTER TABLE changes the structure of a table. The operations are processed using one of the following algorithms:</description>
+    </item>
+    
+    <item>
+      <title>About</title>
+      <link>https://tomchavakis.github.io/about/</link>
+      <pubDate>Tue, 10 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://tomchavakis.github.io/about/</guid>
+      <description>My name is Thomas Chavakis. I&amp;rsquo;m a Software Engineer &amp;amp; Web Developer, specializing in designing large-scale web applications and microServices using GoLang and Microsoft Technologies. I&amp;rsquo;ve worked in different environments, organisations and private companies, but for me the most important thing is the team and challenges.
+I have a BSc in Computer Science, an MSc in Advance Computing &amp;amp; Information Systems and an MSc in Space Applications &amp;amp; Technologies.
+My technology interests apply to the following domains:</description>
+    </item>
+    
+    <item>
+      <title>Projects</title>
+      <link>https://tomchavakis.github.io/projects/</link>
+      <pubDate>Tue, 10 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://tomchavakis.github.io/projects/</guid>
+      <description>Go
+geojson - Implementation of the GeoJSON protocol in GoLang (RFC 7946)
+turf-go - A Go language port of Turf.js
+geo-api- An API written in GO that covers basic GIS Functionality.
+C#
+nuget-license - .NET Core tool to print or save all the licenses of a project
+encrypto -.NET Core Tool to encrypt/decrypt folders or files in a directory and text
+Python
+grib-downloader - Download Weather GRIB Files from NOMADS - NOAA </description>
+    </item>
+    
+    <item>
+      <title>Reading - Podcasts</title>
+      <link>https://tomchavakis.github.io/other/</link>
+      <pubDate>Tue, 10 Nov 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://tomchavakis.github.io/other/</guid>
+      <description>In the past, I read mainly technical books and scientific articles. During the unprecedented times of the pandemic, I started reading books and listening to podcasts and this is a list of what I have found interesting and I would like to share with you.
+Books Tech The Go Programming Language by Alan A.A. Donovan, Brian W. Kernighan
+Designing Data-Intensive Applications, by Martin Kleppmann
+Software Engineering at Google, by Titus Winters, Tom Manshreck, Hyrum Wright</description>
+    </item>
+    
+  </channel>
 </rss>
