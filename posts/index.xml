@@ -6,7 +6,19 @@
     <description>Recent content in Posts on Thomas Chavakis</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 01 Nov 2021 11:40:49 +0200</lastBuildDate><atom:link href="https://tomchavakis.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 28 Nov 2022 23:37:43 +0100</lastBuildDate><atom:link href="https://tomchavakis.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Go - Generics</title>
+      <link>https://tomchavakis.github.io/posts/go-generics/</link>
+      <pubDate>Mon, 28 Nov 2022 23:37:43 +0100</pubDate>
+      
+      <guid>https://tomchavakis.github.io/posts/go-generics/</guid>
+      <description>Abstract In Go 1.18 which released on the 15th of March 2022 [5] added generics to the language, a long awaited feature in the Go Community.
+The following proposal by Ian Lance Taylor is the design for adding generic programming using type parameters to the Go language.
+This design has been proposed and accepted. This article presents basic functionality and examples of the Generics.
+Type parameters With generics, you can declare and use functions or types that are written to work with any of a set of types provided by calling code[1].</description>
+    </item>
+    
     <item>
       <title>Visual studio code extensions for teams</title>
       <link>https://tomchavakis.github.io/posts/visual-studio-code-for-coding-teams/</link>

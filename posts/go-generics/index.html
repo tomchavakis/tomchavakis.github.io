@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html
+  class="not-ready text-sm lg:text-base"
+  style="--bg: #fff"
+  lang="en-us"
+>
+  <head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, shrink-to-fit=no"
+  />
+
+  
+  <title>Go - Generics - Thomas Chavakis</title>
+
+  
+  <meta name="theme-color" />
+  
+  <meta name="description" content="Abstract In Go 1.18 which released on the 15th of March 2022 [5] added generics to the language, a long awaited feature in the Go Community.
+The following proposal by Ian Lance Taylor is the design for adding generic programming using type parameters to the Go language.
+This design has been proposed and accepted. This article presents basic functionality and examples of the Generics.
+Type parameters With generics, you can declare and use functions or types that are written to work with any of a set of types provided by calling code[1]." />
+  <meta
+    name="author"
+    content=""
+  />
+  
+
+  
+  
+  
+  
+  
+  
+  <link rel="preload stylesheet" as="style" href="https://tomchavakis.github.io/main.min.css" />
+
+  
+
+  
+     
+  <link rel="preload" as="image" href="https://tomchavakis.github.io/theme.png" />
+
+  
+  
+  
+  
+
+  
+  <link rel="preload" as="image" href="https://tomchavakis.github.io/twitter.svg" />
+  
+  <link rel="preload" as="image" href="https://tomchavakis.github.io/github.svg" />
+  
+
+  
+  <link rel="icon" href="https://tomchavakis.github.io/favicon.ico" />
+  <link rel="apple-touch-icon" href="https://tomchavakis.github.io/apple-touch-icon.png" />
+
+  
+  <meta name="generator" content="Hugo 0.107.0">
+
+  
+  
+
+  
+  
+  
+  
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.ga=window.ga||function(){(ga.q=ga.q||[]).push(arguments)};ga.l=+new Date;
+	ga('create', 'G-BWLJ0G5LFN', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+<script async src='https://www.google-analytics.com/analytics.js'></script>
+
+  
+  
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BWLJ0G5LFN"></script>
+<script>
+var doNotTrack = false;
+if (!doNotTrack) {
+	window.dataLayer = window.dataLayer || [];
+	function gtag(){dataLayer.push(arguments);}
+	gtag('js', new Date());
+	gtag('config', 'G-BWLJ0G5LFN', { 'anonymize_ip': false });
+}
+</script>
+
+  
+  
+  
+  <meta property="og:title" content="Go - Generics" />
+<meta property="og:description" content="Abstract In Go 1.18 which released on the 15th of March 2022 [5] added generics to the language, a long awaited feature in the Go Community.
+The following proposal by Ian Lance Taylor is the design for adding generic programming using type parameters to the Go language.
+This design has been proposed and accepted. This article presents basic functionality and examples of the Generics.
+Type parameters With generics, you can declare and use functions or types that are written to work with any of a set of types provided by calling code[1]." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://tomchavakis.github.io/posts/go-generics/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-11-28T23:37:43+01:00" />
+<meta property="article:modified_time" content="2022-11-28T23:37:43+01:00" />
+
+
+  
+  <meta itemprop="name" content="Go - Generics">
+<meta itemprop="description" content="Abstract In Go 1.18 which released on the 15th of March 2022 [5] added generics to the language, a long awaited feature in the Go Community.
+The following proposal by Ian Lance Taylor is the design for adding generic programming using type parameters to the Go language.
+This design has been proposed and accepted. This article presents basic functionality and examples of the Generics.
+Type parameters With generics, you can declare and use functions or types that are written to work with any of a set of types provided by calling code[1]."><meta itemprop="datePublished" content="2022-11-28T23:37:43+01:00" />
+<meta itemprop="dateModified" content="2022-11-28T23:37:43+01:00" />
+<meta itemprop="wordCount" content="454">
+<meta itemprop="keywords" content="" />
+  
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Go - Generics"/>
+<meta name="twitter:description" content="Abstract In Go 1.18 which released on the 15th of March 2022 [5] added generics to the language, a long awaited feature in the Go Community.
+The following proposal by Ian Lance Taylor is the design for adding generic programming using type parameters to the Go language.
+This design has been proposed and accepted. This article presents basic functionality and examples of the Generics.
+Type parameters With generics, you can declare and use functions or types that are written to work with any of a set of types provided by calling code[1]."/>
+
+  
+  
+</head>
+
+  <body class="text-black duration-200 ease-out dark:text-white">
+    <header class="mx-auto flex h-[5rem] max-w-3xl px-8 lg:justify-center">
+  <div class="relative z-50 mr-auto flex items-center">
+    <a
+      class="-translate-x-[1px] -translate-y-0.5 text-3xl font-bold"
+      href="https://tomchavakis.github.io/"
+      >Thomas Chavakis</a
+    >
+    <a
+      class="btn-dark ml-6 h-6 w-6 shrink-0 cursor-pointer [background:url(./theme.svg)_left_center/cover_no-repeat] dark:invert dark:[background-position:right]"
+    ></a>
+  </div>
+
+  <a
+    class="btn-menu relative z-50 -mr-8 flex h-[5rem] w-[5rem] shrink-0 cursor-pointer flex-col items-center justify-center gap-2.5 lg:hidden"
+  ></a>
+
+  
+  <script>
+    
+    const htmlClass = document.documentElement.classList;
+    setTimeout(() => {
+      htmlClass.remove('not-ready');
+    }, 10);
+
+    
+    const btnMenu = document.querySelector('.btn-menu');
+    btnMenu.addEventListener('click', () => {
+      htmlClass.toggle('open');
+    });
+
+    
+    const metaTheme = document.querySelector('meta[name="theme-color"]');
+    const lightBg = `"#fff"`.replace(/"/g, '');
+    const setDark = (isDark) => {
+      metaTheme.setAttribute('content', isDark ? '#000' : lightBg);
+      htmlClass[isDark ? 'add' : 'remove']('dark');
+      localStorage.setItem('dark', isDark);
+    };
+
+    
+    const darkScheme = window.matchMedia('(prefers-color-scheme: dark)');
+    if (htmlClass.contains('dark')) {
+      setDark(true);
+    } else {
+      const darkVal = localStorage.getItem('dark');
+      setDark(darkVal ? darkVal === 'true' : darkScheme.matches);
+    }
+
+    
+    darkScheme.addEventListener('change', (event) => {
+      setDark(event.matches);
+    });
+
+    
+    const btnDark = document.querySelector('.btn-dark');
+    btnDark.addEventListener('click', () => {
+      setDark(localStorage.getItem('dark') !== 'true');
+    });
+  </script>
+
+  <div
+    class="nav-wrapper fixed inset-x-0 top-full z-40 flex h-full select-none flex-col justify-center pb-16 duration-200 dark:bg-black lg:static lg:h-auto lg:flex-row lg:!bg-transparent lg:pb-0 lg:transition-none"
+  >
+    
+    
+    <nav class="lg:ml-12 lg:flex lg:flex-row lg:items-center lg:space-x-6">
+      
+      <a
+        class="block text-center text-2xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/"
+        >Home</a
+      >
+      
+      <a
+        class="block text-center text-2xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/posts"
+        >Posts</a
+      >
+      
+      <a
+        class="block text-center text-2xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/projects"
+        >Projects</a
+      >
+      
+      <a
+        class="block text-center text-2xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/other"
+        >Other</a
+      >
+      
+      <a
+        class="block text-center text-2xl leading-[5rem] lg:text-base lg:font-normal"
+        href="/about"
+        >About</a
+      >
+      
+    </nav>
+    
+
+    
+    <nav
+      class="mt-12 flex justify-center space-x-10 dark:invert lg:mt-0 lg:ml-12 lg:items-center lg:space-x-6"
+    >
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./twitter.svg)"
+        href=" https://twitter.com/TomChavakis "
+        target="_blank"
+      ></a>
+      
+      <a
+        class="h-8 w-8 [background:var(--url)_center_center/cover_no-repeat] lg:h-6 lg:w-6"
+        style="--url: url(./github.svg)"
+        href=" https://github.com/tomchavakis "
+        target="_blank"
+      ></a>
+      
+    </nav>
+    
+  </div>
+</header>
+
+
+    <main
+      class="prose prose-neutral relative mx-auto min-h-[calc(100%-10rem)] max-w-3xl px-8 pt-20 pb-32 dark:prose-invert"
+    >
+      
+
+<article>
+  <header class="mb-20">
+    <h1 class="!my-0 pb-2.5">Go - Generics</h1>
+
+    
+    <div class="text-sm opacity-60">
+      
+      <time>Nov 28, 2022</time>
+      
+      
+    </div>
+    
+  </header>
+
+  <section><h2 id="abstract">Abstract</h2>
+<p>In Go 1.18 which released on the 15th of March 2022 [5] added generics to the language, a long awaited feature in the Go Community.</p>
+<p>The following <a href="https://go.googlesource.com/proposal/+/HEAD/design/43651-type-parameters.md">proposal</a> by Ian Lance Taylor is the design for adding generic programming using type parameters to the Go language.</p>
+<p>This design has been proposed and <a href="https://github.com/golang/go/issues/43651">accepted</a>.
+This article presents basic functionality and examples of the Generics.</p>
+<h2 id="type-parameters">Type parameters</h2>
+<p>With generics, you can declare and use functions or types that are written to work with any of a set of types provided by calling code[1].</p>
+<p>Generic code is written using abstract data types that we call type parameters. When running the generic code, the type parameters are replaced by type arguments.[4]</p>
+<p>Functions and types are now permitted to have type parameters. A type parameter list looks like an ordinary parameter list,
+except that it uses square brackets instead of parentheses. [2]</p>
+<p>Just as regular parameters have types, type parameters have meta-types, also known as constraints [4].</p>
+<h4 id="function-min-without-generics">Function Min without Generics</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>func NormalMin(a, b int) int {
+</span></span><span style="display:flex;"><span>    if a &lt; b {
+</span></span><span style="display:flex;"><span>        return a
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    return b
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="function-min-with-generics">Function Min with Generics</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>func GenericsMin[T ~int32](a T, b T) T {
+</span></span><span style="display:flex;"><span>    if a &lt; b {
+</span></span><span style="display:flex;"><span>        return a
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    return b
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="type-constraint">Type Constraint</h4>
+<p>Create a type interface to use as a type constraint. In this example as minType we can use a float64 or an integer.</p>
+<p>Notes:</p>
+<ul>
+<li>The vertical bar expresses a union of types. The type set of a union element is the union of the type sets of each element in the sequence.</li>
+<li>~T means the set of all types whose underlying type is T, so the ~float64 means the set of all types whose underlying type is float64.
+This includes the type float64 itself as well as all types declared with definitions such as type MyFloat64 float64.</li>
+<li>~T is not permitted if T is a type parameter or if T is an interface type. The related error is <code>invalid use of ~ (interface{} is an interface)</code></li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>type minTypes interface {
+</span></span><span style="display:flex;"><span>    ~float64 | int
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>func GenericsMinMinTypes[T minTypes](a T, b T) T {
+</span></span><span style="display:flex;"><span>    if a &lt; b {
+</span></span><span style="display:flex;"><span>        return a
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>    return b
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="how-to-use-each-function">How to use each function</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>func main() {
+</span></span><span style="display:flex;"><span>    fmt.Println(NormalMin(1, 2))
+</span></span><span style="display:flex;"><span>    fmt.Println(GenericsMin[int32](1, 2))
+</span></span><span style="display:flex;"><span>    fmt.Println(GenericsMinMinTypes(0.1, 0.01))
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h4 id="any">any</h4>
+<p>By declaring the token <code>any</code> you allow any type. Behind the scene any is an interface{}</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-fallback" data-lang="fallback"><span style="display:flex;"><span>func printAnyTypeArray[T any](s []T) {
+</span></span><span style="display:flex;"><span>    for _, v := range s {
+</span></span><span style="display:flex;"><span>        fmt.Println(v)
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>func main(){
+</span></span><span style="display:flex;"><span>    printAnyTypeArray[int]([]int{1,2,3})
+</span></span><span style="display:flex;"><span>    printAnyTypeArray[float64]([]float64{0.1,0.01})
+</span></span><span style="display:flex;"><span>    printAnyTypeArray[string]([]string{&#34;a&#34;,&#34;b&#34;})
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><h2 id="when-i-should-not-use-generics">When I should not use generics</h2>
+<ul>
+<li>When a simple interface can be used instead</li>
+<li>When the implementation is different for each type</li>
+</ul>
+<h2 id="references">References</h2>
+<ol>
+<li><a href="https://go.dev/doc/tutorial/generics">generics tutorial</a></li>
+<li><a href="https://go.dev/blog/intro-generics">intro generics</a></li>
+<li><a href="https://songlh.github.io/paper/generic.pdf">Generic Go to Go</a></li>
+<li><a href="https://go.googlesource.com/proposal/+/HEAD/design/43651-type-parameters.md">Generics Proposal</a></li>
+<li><a href="https://go.dev/doc/go1.18">Generics Release</a></li>
+<li><a href="https://www.youtube.com/watch?v=SJ9rvg5nT2c">Tutorial - Golang Dojo</a></li>
+</ol>
+</section>
+
+  
+  
+
+  
+  
+  
+  <nav class="mt-24 flex rounded-lg bg-black/[3%] text-lg dark:bg-white/[8%]">
+    
+    
+    <a
+      class="ml-auto flex w-1/2 items-center justify-end p-6 pl-3 no-underline"
+      href="https://tomchavakis.github.io/posts/visual-studio-code-for-coding-teams/"
+      ><span>Visual studio code extensions for teams</span><span class="ml-1.5">→</span></a
+    >
+    
+  </nav>
+  
+
+  
+  
+</article>
+
+
+    </main>
+
+    <footer
+  class="opaco mx-auto flex h-[5rem] max-w-3xl items-center px-8 text-[0.9em] opacity-60"
+>
+  <div class="mr-auto">
+    &copy; 2022
+    <a class="link" href="https://tomchavakis.github.io/">Thomas Chavakis</a>
+  </div>
+  <a class="link mx-6" href="https://gohugo.io/" rel="noopener" target="_blank"
+    >Powered by Hugo️️</a
+  >️
+  <a
+    class="link"
+    href="https://github.com/nanxiaobei/hugo-paper"
+    rel="noopener"
+    target="_blank"
+    >▷ Paper 6</a
+  >
+</footer>
+
+  </body>
+</html>
